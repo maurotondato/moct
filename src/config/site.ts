@@ -5,8 +5,10 @@
  */
 
 export const site = {
-  name: "MOCT",
-  legalName: "MOCT", // TODO: razón social para el footer y el JSON-LD
+  name: "moctLab.",
+  shortName: "moct",
+  tagline: "Soluciones que impulsan",
+  legalName: "moctLab.", // TODO: razón social para el footer y el JSON-LD
   // TODO: dominio real. Se usa en canonical, OG, sitemap y robots.
   url: "https://moct.com",
   foundingYear: 2026,

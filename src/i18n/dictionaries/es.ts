@@ -1,11 +1,13 @@
 /**
  * Diccionario base (es-AR). El tipo `Dictionary` se infiere de acá,
  * así que cualquier clave que falte en otro idioma rompe el build.
- * El copy definitivo entra cuando se cierre el brief de contenido.
+ *
+ * El eyebrow es la bajada real del logo. El resto del copy es PROVISORIO
+ * hasta que se cierre el brief de contenido (servicios, diferencial, CTA).
  */
 export const es = {
   meta: {
-    title: "MOCT — Soluciones tecnológicas para empresas",
+    title: "moctLab. — Soluciones tecnológicas para empresas",
     description:
       "Diseñamos y construimos software, automatizaciones e inteligencia artificial aplicada para que tu empresa opere mejor.",
   },
@@ -20,14 +22,14 @@ export const es = {
     close: "Cerrar",
   },
   hero: {
-    eyebrow: "Soluciones tecnológicas para empresas",
-    headline: "Tecnología que trabaja",
-    headlineAccent: "para tu negocio",
+    eyebrow: "Soluciones que impulsan",
+    headline: "Tecnología que",
+    headlineAccent: "impulsa tu operación",
     subhead:
-      "Construimos el software que tu empresa necesita: a medida, medible y puesto en producción.",
+      "Diseñamos, construimos y ponemos en producción el software que tu empresa necesita. A medida, medible y sin humo.",
     primaryCta: "Agendar una llamada",
     secondaryCta: "Ver soluciones",
-    scrollHint: "Scrolleá",
+    scrollHint: "Scroll",
   },
   common: {
     backToHome: "Volver al inicio",

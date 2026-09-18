@@ -2,7 +2,7 @@ import type { Dictionary } from "./es";
 
 export const en: Dictionary = {
   meta: {
-    title: "MOCT — Technology solutions for business",
+    title: "moctLab. — Technology solutions for business",
     description:
       "We design and build software, automation and applied AI so your company runs better.",
   },
@@ -17,11 +17,11 @@ export const en: Dictionary = {
     close: "Close",
   },
   hero: {
-    eyebrow: "Technology solutions for business",
-    headline: "Technology that works",
-    headlineAccent: "for your business",
+    eyebrow: "Solutions that drive you forward",
+    headline: "Technology that",
+    headlineAccent: "moves your operation",
     subhead:
-      "We build the software your company actually needs: bespoke, measurable, and shipped to production.",
+      "We design, build and ship the software your company actually needs. Bespoke, measurable, no hand-waving.",
     primaryCta: "Book a call",
     secondaryCta: "See solutions",
     scrollHint: "Scroll",

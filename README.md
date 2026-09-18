@@ -50,11 +50,17 @@ src/
   Si falta una clave en inglés, el build falla a propósito.
 - **Rutas nuevas en el sitemap**: array `routes` en `src/app/sitemap.ts`.
 
+## Marca
+
+- Nombre: **moctLab.** — bajada oficial: *Soluciones que impulsan*
+- Acento: `#4E14FF`, muestreado del píxel más saturado del logo original.
+- Los logos llegaron sólo en PNG. Se vectorizaron a SVG (`public/brand/`) y se
+  pintan como máscara CSS, así toman `currentColor` y sirven sobre cualquier fondo.
+
 ## Pendiente del brief
 
-- [ ] Logo definitivo (SVG) y paleta real de marca
+- [ ] Servicios definitivos y copy de cada sección (el del hero es provisorio)
 - [ ] Dominio final → `site.url`
-- [ ] Servicios definitivos y copy de cada sección
 - [ ] Definir si Pliggo vive en este dominio o aparte
 - [ ] Datos de contacto, redes y razón social
 - [ ] Casos / testimonios reales (si los hay)
