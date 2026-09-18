@@ -66,7 +66,9 @@
 
   html {
     -webkit-tap-highlight-color: transparent;
-    scroll-behavior: smooth;
+    /* Sin scroll-behavior: smooth. Lenis es el dueño del scroll, y desde
+       Next 16 el CSS smooth ya no se anula en las navegaciones: dejarlo
+       haría que cada cambio de página vuelva arriba con animación lenta. */
   }
 
   body {
@@ -150,9 +152,6 @@
 
 /* Respeto total por prefers-reduced-motion: nada se mueve, todo se ve. */
 @media (prefers-reduced-motion: reduce) {
-  html {
-    scroll-behavior: auto;
-  }
   *,
   *::before,
   *::after {
