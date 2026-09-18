@@ -128,3 +128,48 @@ export function websiteJsonLd(locale: Locale) {
     publisher: { "@id": `${site.url}/#organization` },
   };
 }
+
+/**
+ * Preguntas frecuentes en datos estructurados. Es lo que habilita el resultado
+ * desplegable en Google: la respuesta aparece en el buscador sin que el usuario
+ * entre, y la web gana altura en la página de resultados.
+ */
+export function faqJsonLd(dict: {
+  faq: { items: { question: string; answer: string }[] };
+}) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    mainEntity: dict.faq.items.map((item) => ({
+      "@type": "Question",
+      name: item.question,
+      acceptedAnswer: { "@type": "Answer", text: item.answer },
+    })),
+  };
+}
+
+/** Catálogo de servicios, para que el buscador entienda qué vendemos. */
+export function servicesJsonLd(
+  dict: {
+    services: { title: string; items: { name: string; body: string }[] };
+  },
+  locale: Locale,
+) {
+  return {
+    "@context": "https://schema.org",
+    "@type": "OfferCatalog",
+    name: dict.services.title,
+    url: absoluteUrl(`/${locale}#servicios`),
+    provider: { "@id": `${site.url}/#organization` },
+    itemListElement: dict.services.items.map((service, index) => ({
+      "@type": "Offer",
+      position: index + 1,
+      itemOffered: {
+        "@type": "Service",
+        name: service.name,
+        description: service.body,
+        provider: { "@id": `${site.url}/#organization` },
+      },
+    })),
+  };
+}

@@ -78,9 +78,19 @@ src/
 - Los logos llegaron sólo en PNG. Se vectorizaron a SVG (`public/brand/`) y se
   pintan como máscara CSS, así toman `currentColor` y sirven sobre cualquier fondo.
 
+## Formulario de contacto
+
+El envío va a un servicio externo, porque un sitio estático no manda mails solo.
+Se activa con la variable `NEXT_PUBLIC_FORM_ENDPOINT` (Formspree, Web3Forms y
+similares aceptan el mismo POST con JSON). Sin esa variable el formulario no se
+rompe: arma un mailto con todo cargado y abre el cliente de correo.
+
 ## Pendiente del brief
 
-- [ ] Servicios definitivos y copy de cada sección (el del hero es provisorio)
+- [ ] ⚠️ **Revisar los compromisos comerciales**: plazos, precio cerrado,
+      propiedad del código y respuestas de FAQ son redacción propuesta, no
+      confirmada. Están en `src/i18n/dictionaries/es.ts`.
+- [ ] Activar `NEXT_PUBLIC_FORM_ENDPOINT` para que el formulario envíe solo
 - [ ] Dominio final → `site.url`
 - [ ] Definir si Pliggo vive en este dominio o aparte
 - [ ] Datos de contacto, redes y razón social

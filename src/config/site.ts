@@ -15,7 +15,7 @@ export const site = {
   url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://moct.com",
   foundingYear: 2026,
   contact: {
-    email: "hola@moct.com", // TODO
+    email: "moct.ventas@gmail.com",
     phone: "", // TODO: E.164, ej. +5491122334455
     whatsapp: "", // TODO: solo dígitos, ej. 5491122334455
   },

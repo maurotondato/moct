@@ -99,6 +99,13 @@ export default async function LocaleLayout({
       className={`${geistSans.variable} ${geistMono.variable} h-full antialiased`}
       suppressHydrationWarning
     >
+      <head>
+        {/* Sin JavaScript, el revelado al hacer scroll nunca se dispara y el
+            contenido quedaría invisible. Esto lo fuerza a mostrarse. */}
+        <noscript>
+          <style>{`.reveal,.motif .motif-item,.motif .motif-draw{opacity:1!important;transform:none!important;filter:none!important}`}</style>
+        </noscript>
+      </head>
       <body className="flex min-h-full flex-col bg-ink-950 text-chalk">
         <JsonLd
           data={[organizationJsonLd(typedLocale), websiteJsonLd(typedLocale)]}

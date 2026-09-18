@@ -104,7 +104,7 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
           style={{ animationDelay: `${T.actions}ms` }}
         >
           <Button href={`/${locale}#contacto`}>{dict.hero.primaryCta}</Button>
-          <Button href={`/${locale}#servicios`} variant="ghost">
+          <Button href={`/${locale}#diagnostico`} variant="ghost">
             {dict.hero.secondaryCta}
           </Button>
         </div>

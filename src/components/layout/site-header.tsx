@@ -19,6 +19,7 @@ export function SiteHeader({
     { href: `/${locale}#servicios`, label: dict.nav.services },
     { href: `/${locale}#proceso`, label: dict.nav.process },
     { href: `/${locale}#nosotros`, label: dict.nav.about },
+    { href: `/${locale}#preguntas`, label: dict.nav.faq },
   ];
 
   return (
