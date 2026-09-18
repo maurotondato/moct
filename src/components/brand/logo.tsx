@@ -1,3 +1,4 @@
+import { asset } from "@/lib/asset";
 import { cn } from "@/lib/utils";
 
 /**
@@ -26,7 +27,8 @@ export function Logo({
   label = "moctLab.",
   style,
 }: LogoProps) {
-  const { src, ratio } = SOURCES[variant];
+  const { ratio } = SOURCES[variant];
+  const src = asset(SOURCES[variant].src);
 
   return (
     <span

@@ -6,7 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "eslint"
+    "lint": "eslint",
+    "build:pages": "DEPLOY_TARGET=github-pages next build && node scripts/pages-postbuild.mjs out"
   },
   "dependencies": {
     "clsx": "^2.1.1",

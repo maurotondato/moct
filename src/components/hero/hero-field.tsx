@@ -87,24 +87,25 @@ const fragment = /* glsl */ `
     // mostrar), así que se desvanece a medida que baja el aspecto.
     float aspect = uResolution.x / uResolution.y;
     float bias = smoothstep(0.80, 1.45, aspect);
-    energy *= mix(1.0, mix(0.22, 1.0, smoothstep(-0.95, 0.90, p.x)), bias);
+    energy *= mix(1.0, mix(0.42, 1.0, smoothstep(-1.10, 0.85, p.x)), bias);
 
     vec3 cDeep   = vec3(0.020, 0.016, 0.047);
     vec3 cIndigo = vec3(0.122, 0.024, 0.525);
     vec3 cViolet = vec3(0.306, 0.078, 1.000);
     vec3 cLav    = vec3(0.706, 0.612, 1.000);
 
-    // Umbrales altos: el violeta pleno aparece sólo en las crestas, no de fondo.
+    // Umbrales medios: el humo violeta ocupa pantalla, pero el negro sigue
+    // ganando en el flanco del texto.
     vec3 col = cDeep;
-    col = mix(col, cIndigo, smoothstep(0.40, 0.72, energy));
-    col = mix(col, cViolet, smoothstep(0.66, 0.96, energy));
-    col = mix(col, cLav, smoothstep(0.88, 1.05, energy) * 0.45);
+    col = mix(col, cIndigo, smoothstep(0.32, 0.64, energy));
+    col = mix(col, cViolet, smoothstep(0.55, 0.88, energy));
+    col = mix(col, cLav, smoothstep(0.80, 1.00, energy) * 0.55);
 
     // Viñeta: mantiene el foco en el texto.
-    col *= smoothstep(1.15, 0.28, length(p));
+    col *= smoothstep(1.28, 0.24, length(p));
 
     // Baja general: el fondo acompaña, no compite.
-    col *= 0.78;
+    col *= 0.92;
 
     // El campo se apaga a medida que el hero sale de pantalla.
     col *= 1.0 - uScroll * 0.85;

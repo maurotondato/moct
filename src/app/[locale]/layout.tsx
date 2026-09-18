@@ -6,7 +6,12 @@ import "../globals.css";
 import { site } from "@/config/site";
 import { hreflang, isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
-import { buildAlternates, organizationJsonLd, websiteJsonLd } from "@/lib/seo";
+import {
+  buildAlternates,
+  isPreviewDeploy,
+  organizationJsonLd,
+  websiteJsonLd,
+} from "@/lib/seo";
 import { JsonLd } from "@/components/seo/json-ld";
 import { SmoothScroll } from "@/components/providers/smooth-scroll";
 
@@ -63,17 +68,19 @@ export async function generateMetadata({
       title: dict.meta.title,
       description: dict.meta.description,
     },
-    robots: {
-      index: true,
-      follow: true,
-      googleBot: {
-        index: true,
-        follow: true,
-        "max-image-preview": "large",
-        "max-snippet": -1,
-        "max-video-preview": -1,
-      },
-    },
+    robots: isPreviewDeploy
+      ? { index: false, follow: false }
+      : {
+          index: true,
+          follow: true,
+          googleBot: {
+            index: true,
+            follow: true,
+            "max-image-preview": "large",
+            "max-snippet": -1,
+            "max-video-preview": -1,
+          },
+        },
   };
 }
 

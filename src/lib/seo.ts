@@ -2,10 +2,24 @@ import type { Metadata } from "next";
 import { site } from "@/config/site";
 import { defaultLocale, hreflang, locales, type Locale } from "@/i18n/config";
 
-/** URL absoluta a partir de un path interno. */
+/**
+ * URL absoluta a partir de un path interno.
+ *
+ * No usa `new URL(path, base)` a propósito: con una ruta absoluta, el
+ * constructor descarta el subdirectorio de la base, así que un despliegue
+ * bajo `/moct` emitiría canonical apuntando a la raíz del dominio.
+ */
 export function absoluteUrl(path = "/") {
-  return new URL(path, site.url).toString();
+  const base = site.url.replace(/\/+$/, "");
+  const suffix = path.startsWith("/") ? path : `/${path}`;
+  return `${base}${suffix}`;
 }
+
+/**
+ * El despliegue de vista previa no debe competir en Google con el dominio
+ * real: sería contenido duplicado de nuestra propia web.
+ */
+export const isPreviewDeploy = process.env.DEPLOY_TARGET === "github-pages";
 
 /**
  * Construye el bloque de alternates (canonical + hreflang + x-default)

@@ -16,11 +16,32 @@ estética dark tech, bilingüe ES/EN, optimizado para SEO técnico.
 ## Comandos
 
 ```bash
-npm run dev     # desarrollo
-npm run build   # build de producción
-npm run lint    # eslint
+npm run dev         # desarrollo
+npm run build       # build de producción (servidor Node, proxy activo)
+npm run build:pages # export estático para GitHub Pages
+npm run lint        # eslint
 npx tsc --noEmit
 ```
+
+## Vista previa en GitHub Pages
+
+El sitio se publica solo en cada push: lo hace `.github/workflows/pages.yml`.
+Para activarlo, una vez, en GitHub: **Settings → Pages → Source: GitHub Actions**.
+Queda en `https://<usuario>.github.io/<repo>/`.
+
+Dos cosas que hay que saber de este despliegue:
+
+- **Es una vista previa, no el sitio final.** Se publica con `noindex` y con el
+  `robots.txt` cerrado, para que no compita en Google con el dominio real
+  cuando exista.
+- **Pages no corre servidor.** El proxy que redirige `/` al idioma del
+  visitante no existe ahí, así que `scripts/pages-postbuild.mjs` escribe un
+  `index.html` de raíz que hace lo mismo desde el navegador. Ese script también
+  crea el `.nojekyll` sin el cual Pages ignora la carpeta `_next/` y el sitio
+  carga sin estilos.
+
+Para el dominio real conviene un hosting con servidor (Vercel y similares):
+vuelve el proxy, la optimización de imágenes y las rutas dinámicas.
 
 ## Arquitectura
 

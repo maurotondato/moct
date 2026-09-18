@@ -10,7 +10,9 @@ export const site = {
   tagline: "Soluciones que impulsan",
   legalName: "moctLab.", // TODO: razón social para el footer y el JSON-LD
   // TODO: dominio real. Se usa en canonical, OG, sitemap y robots.
-  url: "https://moct.com",
+  // Se puede pisar por entorno para que cada despliegue (Pages, preview, prod)
+  // emita sus propios canonical en vez de mentir apuntando a otro lado.
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://moct.com",
   foundingYear: 2026,
   contact: {
     email: "hola@moct.com", // TODO
