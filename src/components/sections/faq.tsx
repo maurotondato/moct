@@ -26,11 +26,23 @@ export function Faq({ dict }: { dict: Dictionary }) {
               <details className="faq group border-b border-white/10">
                 <summary className="flex cursor-pointer list-none items-start justify-between gap-6 py-6 text-fluid-lg font-medium transition-colors duration-300 hover:text-accent-soft">
                   <span className="text-pretty">{item.question}</span>
+                  {/* El signo va en SVG y no como carácter: una "+" tipográfica
+                      se apoya en la línea de base y nunca queda en el centro
+                      óptico del círculo. Los trazos sí son simétricos. */}
                   <span
                     aria-hidden
-                    className="mt-1 grid size-6 shrink-0 place-items-center rounded-full border border-white/20 transition-all duration-400 ease-out-expo group-open:rotate-45 group-open:border-accent group-open:text-accent"
+                    className="mt-1 grid size-6 shrink-0 place-items-center rounded-full border border-white/20 transition-all duration-[400ms] ease-out-expo group-open:rotate-45 group-open:border-accent group-open:text-accent"
                   >
-                    +
+                    <svg
+                      viewBox="0 0 24 24"
+                      className="size-3"
+                      fill="none"
+                      stroke="currentColor"
+                      strokeWidth="2.5"
+                      strokeLinecap="round"
+                    >
+                      <path d="M12 5v14M5 12h14" />
+                    </svg>
                   </span>
                 </summary>
                 <p className="faq-body max-w-2xl pb-7 text-fluid-base leading-relaxed text-chalk-dim text-pretty">

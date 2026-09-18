@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { Logo } from "@/components/brand/logo";
-import { site } from "@/config/site";
+import { site, whatsappLink } from "@/config/site";
 import { localeLabel, locales, type Locale } from "@/i18n/config";
 import type { Dictionary } from "@/i18n/get-dictionary";
 
@@ -11,6 +11,7 @@ export function SiteFooter({
   dict: Dictionary;
   locale: Locale;
 }) {
+  const whatsapp = whatsappLink(dict.contact.whatsappMessage);
   const links = [
     { href: `/${locale}#servicios`, label: dict.nav.services },
     { href: `/${locale}#proceso`, label: dict.nav.process },
@@ -52,12 +53,40 @@ export function SiteFooter({
             <h2 className="font-mono text-fluid-xs tracking-[0.25em] text-chalk-muted uppercase">
               {dict.footer.contactTitle}
             </h2>
-            <a
-              href={`mailto:${site.contact.email}`}
-              className="mt-5 block text-fluid-sm text-chalk-dim transition-colors duration-300 hover:text-accent-soft"
-            >
-              {site.contact.email}
-            </a>
+            <ul className="mt-5 space-y-3">
+              <li>
+                <a
+                  href={`mailto:${site.contact.email}`}
+                  className="text-fluid-sm text-chalk-dim transition-colors duration-300 hover:text-accent-soft"
+                >
+                  {site.contact.email}
+                </a>
+              </li>
+              {whatsapp ? (
+                <li>
+                  <a
+                    href={whatsapp}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-fluid-sm text-chalk-dim transition-colors duration-300 hover:text-accent-soft"
+                  >
+                    WhatsApp
+                  </a>
+                </li>
+              ) : null}
+              {site.social.instagram ? (
+                <li>
+                  <a
+                    href={site.social.instagram}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-fluid-sm text-chalk-dim transition-colors duration-300 hover:text-accent-soft"
+                  >
+                    Instagram
+                  </a>
+                </li>
+              ) : null}
+            </ul>
 
             <div className="mt-8 flex gap-2">
               {locales.map((item) => (

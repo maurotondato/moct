@@ -16,12 +16,17 @@ export const site = {
   foundingYear: 2026,
   contact: {
     email: "moct.ventas@gmail.com",
-    phone: "", // TODO: E.164, ej. +5491122334455
-    whatsapp: "", // TODO: solo dígitos, ej. 5491122334455
+    phone: "",
+    /**
+     * WhatsApp en formato internacional, sólo dígitos: 54 (Argentina) + 9
+     * (móvil) + el número sin el 0 ni el 15. Verificar que el enlace abra el
+     * chat correcto antes de publicar.
+     */
+    whatsapp: "5492223431190",
   },
   social: {
     linkedin: "", // TODO
-    instagram: "", // TODO
+    instagram: "https://instagram.com/moctlab",
     github: "",
   },
   /** Producto propio. TODO: confirmar si vive acá o en dominio aparte. */
@@ -34,3 +39,10 @@ export const site = {
 } as const;
 
 export type Site = typeof site;
+
+/** Enlace a WhatsApp con el mensaje inicial ya escrito. */
+export function whatsappLink(message?: string) {
+  if (!site.contact.whatsapp) return null;
+  const query = message ? `?text=${encodeURIComponent(message)}` : "";
+  return `https://wa.me/${site.contact.whatsapp}${query}`;
+}

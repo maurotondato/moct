@@ -20,7 +20,7 @@ export const en: Dictionary = {
   hero: {
     eyebrow: "Solutions that drive you forward",
     headline: "Technology that",
-    headlineAccent: "drives results",
+    headlineAccent: "drives your business",
     subhead:
       "We design, build and ship the software your company actually needs. Bespoke, measurable, no hand-waving.",
     primaryCta: "Tell us about your project",
@@ -215,6 +215,7 @@ export const en: Dictionary = {
     title: "Tell us what you need",
     subtitle:
       "We reply within 24 business hours. The first diagnosis is free and commits you to nothing.",
+    whatsappMessage: "Hi moctLab, I'd like to ask you about a project.",
     form: {
       name: "Name",
       namePlaceholder: "Your name",

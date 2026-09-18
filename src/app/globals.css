@@ -333,6 +333,135 @@
   }
 }
 
+/* --- Tarjetas del diagnóstico --- */
+.problem-grid {
+  perspective: 1200px;
+}
+
+.problem-card {
+  --mx: 50%;
+  --my: 50%;
+  --rx: 0deg;
+  --ry: 0deg;
+  opacity: 0;
+}
+
+/* La entrada arranca cuando la grilla entra en pantalla. */
+.problem-grid[data-revealed="true"] .problem-card {
+  animation: card-in 0.9s var(--ease-out-expo) both;
+}
+
+@keyframes card-in {
+  from {
+    opacity: 0;
+    transform: translateY(2.5rem) scale(0.97);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* La inclinación vive en el hijo: si compartiera elemento con la animación de
+   entrada, el fill-mode la pisaría y el 3D nunca se aplicaría. */
+.problem-card-inner {
+  position: relative;
+  height: 100%;
+  overflow: hidden;
+  border-radius: var(--radius-card);
+  border: 1px solid rgb(255 255 255 / 0.08);
+  background-color: rgb(255 255 255 / 0.02);
+  padding: 2rem;
+  transform: rotateX(var(--rx)) rotateY(var(--ry));
+  transition:
+    transform 0.45s var(--ease-out-expo),
+    background-color 0.5s ease;
+}
+
+@media (min-width: 768px) {
+  .problem-card-inner {
+    padding: 2.5rem;
+  }
+}
+
+.problem-card:hover .problem-card-inner {
+  background-color: rgb(255 255 255 / 0.04);
+}
+
+/* Foco que sigue al cursor dentro de la tarjeta. */
+.problem-card-glow {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  background: radial-gradient(
+    340px circle at var(--mx) var(--my),
+    rgb(78 20 255 / 0.20),
+    transparent 70%
+  );
+}
+
+/* Mismo degradado, recortado al contorno: ilumina sólo el tramo de borde más
+   cercano al puntero. La máscara deja ver el relleno sólo en el 1px del borde. */
+.problem-card-border {
+  position: absolute;
+  inset: 0;
+  border-radius: var(--radius-card);
+  padding: 1px;
+  opacity: 0;
+  transition: opacity 0.45s ease;
+  background: radial-gradient(
+    260px circle at var(--mx) var(--my),
+    var(--color-accent),
+    transparent 65%
+  );
+  -webkit-mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  -webkit-mask-composite: xor;
+  mask:
+    linear-gradient(#000 0 0) content-box,
+    linear-gradient(#000 0 0);
+  mask-composite: exclude;
+}
+
+.problem-card:hover .problem-card-glow,
+.problem-card:hover .problem-card-border {
+  opacity: 1;
+}
+
+/* --- Proceso paso a paso --- */
+/* El riel se llena con el mismo valor que enciende los pasos. */
+.process-rail {
+  transform: scaleX(var(--progress, 0));
+  transition: transform 0.25s linear;
+}
+
+@media (max-width: 1023px) {
+  .process-rail {
+    transform: scaleY(var(--progress, 0));
+  }
+}
+
+/* El paso recién alcanzado late una vez: marca dónde está parado el recorrido. */
+.process-node-current {
+  animation: node-reached 0.9s var(--ease-out-expo);
+}
+
+@keyframes node-reached {
+  0% {
+    transform: scale(1);
+    box-shadow: 0 0 0 0 rgb(78 20 255 / 0.55);
+  }
+  40% {
+    transform: scale(1.12);
+  }
+  100% {
+    transform: scale(1);
+    box-shadow: 0 0 0 22px rgb(78 20 255 / 0);
+  }
+}
+
 /* --- Acordeón de preguntas --- */
 .faq summary::-webkit-details-marker {
   display: none;
@@ -368,9 +497,14 @@
      traiga, quedarían invisibles para siempre. Se muestran de entrada. */
   .reveal,
   .motif .motif-item,
-  .motif .motif-draw {
+  .motif .motif-draw,
+  .problem-card {
     opacity: 1;
     transform: none;
     filter: none;
+  }
+
+  .problem-card-inner {
+    transform: none;
   }
 }

@@ -27,7 +27,7 @@ export const es = {
   hero: {
     eyebrow: "Soluciones que impulsan",
     headline: "Tecnología que",
-    headlineAccent: "impulsa resultados",
+    headlineAccent: "impulsa tu empresa",
     subhead:
       "Diseñamos, construimos y ponemos en producción el software que tu empresa necesita. A medida, medible y sin humo.",
     primaryCta: "Contanos tu proyecto",
@@ -222,6 +222,8 @@ export const es = {
     title: "Contanos qué necesitás",
     subtitle:
       "Respondemos dentro de las 24 horas hábiles. El primer diagnóstico no se cobra ni compromete a nada.",
+    /** Mensaje que aparece ya escrito al abrir el chat. */
+    whatsappMessage: "Hola moctLab, quiero consultarles por un proyecto.",
     form: {
       name: "Nombre",
       namePlaceholder: "Cómo te llamás",
