@@ -1,0 +1,164 @@
+@import "tailwindcss";
+
+/* ============================================================
+   MOCT — sistema de diseño
+   Los acentos son PROVISORIOS hasta que entre el logo definitivo:
+   se cambian sólo acá (--color-accent / --color-accent-2) y se
+   propagan a todo el sitio.
+   ============================================================ */
+
+@theme {
+  /* --- Superficies (dark tech) --- */
+  --color-ink-950: #04050a;
+  --color-ink-900: #070910;
+  --color-ink-850: #0b0e17;
+  --color-ink-800: #11141f;
+  --color-ink-700: #191d2b;
+  --color-ink-600: #252a3b;
+
+  /* --- Texto --- */
+  --color-chalk: #f4f6fb;
+  --color-chalk-dim: #b9c0d0;
+  --color-chalk-muted: #7b8499;
+
+  /* --- Acento de marca (PROVISORIO) --- */
+  --color-accent: #1fe0f0;
+  --color-accent-soft: #7af1f9;
+  --color-accent-deep: #0a8f9c;
+  --color-accent-2: #7c5cff;
+
+  /* --- Semánticos --- */
+  --color-background: var(--color-ink-950);
+  --color-foreground: var(--color-chalk);
+  --color-border-subtle: rgb(255 255 255 / 0.08);
+  --color-border-strong: rgb(255 255 255 / 0.16);
+
+  /* --- Tipografía --- */
+  --font-sans: var(--font-geist-sans), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), ui-monospace, monospace;
+
+  /* Escala fluida: escala sola entre 360px y 1600px de viewport */
+  --text-fluid-xs: clamp(0.75rem, 0.72rem + 0.15vw, 0.8125rem);
+  --text-fluid-sm: clamp(0.875rem, 0.84rem + 0.18vw, 0.9375rem);
+  --text-fluid-base: clamp(1rem, 0.95rem + 0.25vw, 1.125rem);
+  --text-fluid-lg: clamp(1.125rem, 1.03rem + 0.45vw, 1.375rem);
+  --text-fluid-xl: clamp(1.375rem, 1.2rem + 0.8vw, 1.875rem);
+  --text-fluid-2xl: clamp(1.75rem, 1.4rem + 1.6vw, 2.75rem);
+  --text-fluid-3xl: clamp(2.25rem, 1.6rem + 3vw, 4rem);
+  --text-fluid-4xl: clamp(2.75rem, 1.7rem + 4.8vw, 5.5rem);
+  --text-fluid-hero: clamp(3rem, 1.2rem + 8vw, 9rem);
+
+  /* --- Curvas de animación --- */
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-out-expo: cubic-bezier(0.87, 0, 0.13, 1);
+  --ease-out-quint: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+
+  /* --- Radios --- */
+  --radius-card: 1rem;
+  --radius-pill: 999px;
+}
+
+@layer base {
+  * {
+    border-color: var(--color-border-subtle);
+  }
+
+  html {
+    -webkit-tap-highlight-color: transparent;
+    scroll-behavior: smooth;
+  }
+
+  body {
+    background-color: var(--color-background);
+    color: var(--color-foreground);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    overflow-x: clip;
+  }
+
+  ::selection {
+    background-color: var(--color-accent);
+    color: var(--color-ink-950);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-accent);
+    outline-offset: 3px;
+    border-radius: 2px;
+  }
+
+  /* El scrollbar no puede romper la estética dark */
+  ::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+  }
+  ::-webkit-scrollbar-track {
+    background: var(--color-ink-950);
+  }
+  ::-webkit-scrollbar-thumb {
+    background: var(--color-ink-700);
+    border-radius: 999px;
+    border: 2px solid var(--color-ink-950);
+  }
+  ::-webkit-scrollbar-thumb:hover {
+    background: var(--color-ink-600);
+  }
+}
+
+@layer utilities {
+  /* Contenedor maestro: un solo lugar donde vive el ancho del sitio */
+  .container-moct {
+    width: 100%;
+    margin-inline: auto;
+    max-width: 80rem;
+    padding-inline: 1.25rem;
+  }
+  @media (min-width: 768px) {
+    .container-moct {
+      padding-inline: 2.5rem;
+    }
+  }
+
+  .text-gradient-brand {
+    background-image: linear-gradient(
+      100deg,
+      var(--color-chalk) 0%,
+      var(--color-accent-soft) 45%,
+      var(--color-accent-2) 100%
+    );
+    background-clip: text;
+    -webkit-background-clip: text;
+    color: transparent;
+  }
+
+  /* Grid técnico de fondo, sutil */
+  .bg-tech-grid {
+    background-image:
+      linear-gradient(to right, rgb(255 255 255 / 0.04) 1px, transparent 1px),
+      linear-gradient(to bottom, rgb(255 255 255 / 0.04) 1px, transparent 1px);
+    background-size: 72px 72px;
+  }
+
+  .glow-accent {
+    box-shadow:
+      0 0 0 1px rgb(31 224 240 / 0.18),
+      0 0 40px -8px rgb(31 224 240 / 0.45);
+  }
+}
+
+/* Respeto total por prefers-reduced-motion: nada se mueve, todo se ve. */
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
