@@ -8,8 +8,12 @@ import { cn } from "@/lib/utils";
  */
 type LogoProps = {
   className?: string;
-  /** `full` es el lockup con "Lab." y bajada; `wordmark` es sólo "moct". */
-  variant?: "full" | "wordmark";
+  /**
+   * `mark` es el logotipo sin bajada (el que se usa en el sitio: la bajada ya
+   * está escrita en el hero y repetirla es redundante), `full` lo incluye y
+   * `wordmark` es sólo "moct".
+   */
+  variant?: "mark" | "full" | "wordmark";
   /** Texto alternativo. `null` cuando el logo es decorativo. */
   label?: string | null;
   /** Se fusiona con los estilos de la máscara (p. ej. para retrasar su animación). */
@@ -17,13 +21,14 @@ type LogoProps = {
 };
 
 const SOURCES = {
+  mark: { src: "/brand/logo-mark.svg", ratio: 3.7809 },
   full: { src: "/brand/logo.svg", ratio: 3.1206 },
   wordmark: { src: "/brand/logo-wordmark.svg", ratio: 2.8806 },
 } as const;
 
 export function Logo({
   className,
-  variant = "full",
+  variant = "mark",
   label = "moctLab.",
   style,
 }: LogoProps) {

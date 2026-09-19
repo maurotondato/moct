@@ -45,7 +45,7 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
         <Logo
           variant="wordmark"
           label={null}
-          className="animate-fade-in w-[170%] max-w-none text-white/[0.028] sm:w-[130%] lg:w-[105%]"
+          className="animate-fade-in w-[170%] max-w-none text-white/[0.028] sm:w-[130%] lg:w-[105%] lg:text-white/[0.062]"
           style={{ animationDelay: `${T.cue}ms`, animationDuration: "2.2s" }}
         />
       </div>

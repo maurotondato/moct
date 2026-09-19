@@ -60,10 +60,17 @@ export function Process({ dict }: { dict: Dictionary }) {
 
       el.style.setProperty("--progress", String(progress));
 
-      const next = Math.min(
-        steps.length,
-        Math.floor(progress * steps.length + 0.35),
-      );
+      /**
+       * Umbrales explícitos en vez de repartir el tramo en partes iguales: así
+       * el último paso se enciende al 80% del recorrido y no al final justo.
+       * Con el reparto parejo quedaba tan al límite que en ventanas bajas
+       * apenas se llegaba a ver encendido antes de pasar de largo.
+       */
+      const last = Math.max(steps.length - 1, 1);
+      let next = 0;
+      for (let i = 0; i < steps.length; i++) {
+        if (progress >= 0.1 + (i * 0.7) / last) next = i + 1;
+      }
       if (next !== reachedRef.current) {
         reachedRef.current = next;
         setReached(next);
