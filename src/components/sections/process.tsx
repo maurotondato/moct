@@ -39,13 +39,23 @@ export function Process({ dict }: { dict: Dictionary }) {
     const update = () => {
       frame = 0;
       const rect = el.getBoundingClientRect();
+      const viewport = window.innerHeight;
 
-      // El recorrido no puede depender sólo del alto del bloque: en escritorio
-      // los cuatro pasos entran en una fila baja y el riel se llenaba de golpe.
-      // Sumarle una fracción de la pantalla le da al avance una distancia
-      // pareja en cualquier disposición.
-      const span = rect.height + window.innerHeight * 0.75;
-      const travelled = window.innerHeight * 0.85 - rect.top;
+      /**
+       * El recorrido tiene que terminar mientras la sección todavía se ve.
+       *
+       * Antes el tramo era `alto + 75% de pantalla`, y con los cuatro pasos en
+       * una fila baja eso empujaba el final tan lejos que el último recién se
+       * encendía cuando la sección ya se iba: en la práctica nunca se veía
+       * "Puesta en marcha" activo.
+       *
+       * Ahora el tramo se mide contra el alto real del bloque, con un piso de
+       * 60% de pantalla para que en escritorio no se llene de golpe. Arranca
+       * cuando el bloque asoma al 90% de la pantalla y llega al final con el
+       * bloque todavía bien adentro del cuadro.
+       */
+      const span = Math.max(rect.height + viewport * 0.05, viewport * 0.6);
+      const travelled = viewport * 0.9 - rect.top;
       const progress = Math.min(Math.max(travelled / span, 0), 1);
 
       el.style.setProperty("--progress", String(progress));
