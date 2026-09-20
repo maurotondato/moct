@@ -423,6 +423,74 @@
   }
 }
 
+/* --- El punto que se convierte en tilde --- */
+/* Estado de partida: sólo el punto. El anillo está encogido e invisible y el
+   tilde, sin dibujar. */
+.check .check-ring {
+  opacity: 0;
+  transform: scale(0.3);
+  transform-origin: center;
+}
+
+.check .check-dot {
+  opacity: 1;
+  transform-origin: center;
+}
+
+.check .check-tick {
+  stroke-dasharray: 1;
+  stroke-dashoffset: 1;
+}
+
+.check[data-checked="true"] .check-ring {
+  animation: check-ring 0.55s var(--ease-out-expo) var(--check-delay, 0ms) both;
+}
+
+.check[data-checked="true"] .check-dot {
+  animation: check-dot 0.35s var(--ease-out-expo) var(--check-delay, 0ms) both;
+}
+
+/* El tilde entra después del anillo: primero se abre el lugar, después se marca. */
+.check[data-checked="true"] .check-tick {
+  animation: check-tick 0.5s var(--ease-out-quint)
+    calc(var(--check-delay, 0ms) + 220ms) both;
+}
+
+@keyframes check-ring {
+  from {
+    opacity: 0;
+    transform: scale(0.3);
+  }
+  60% {
+    opacity: 1;
+    transform: scale(1.08);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes check-dot {
+  from {
+    opacity: 1;
+    transform: scale(1);
+  }
+  to {
+    opacity: 0;
+    transform: scale(0.2);
+  }
+}
+
+@keyframes check-tick {
+  from {
+    stroke-dashoffset: 1;
+  }
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+
 /* --- Proceso paso a paso --- */
 /* El riel se llena con el mismo valor que enciende los pasos. */
 .process-rail {

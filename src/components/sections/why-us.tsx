@@ -1,5 +1,6 @@
 import { SectionHeading } from "@/components/ui/section-heading";
 import { Reveal } from "@/components/ui/reveal";
+import { CheckMark } from "@/components/ui/check-mark";
 import type { Dictionary } from "@/i18n/get-dictionary";
 
 /**
@@ -31,10 +32,8 @@ export function WhyUs({ dict }: { dict: Dictionary }) {
                     boxShadow: "0 20px 60px -25px rgb(78 20 255 / 0.65)",
                   }}
                 />
-                <span
-                  aria-hidden
-                  className="block size-2 rounded-full bg-accent transition-transform duration-500 ease-spring group-hover:scale-150"
-                />
+                {/* Se marca sola al pasar por la tarjeta, escalonada por columna. */}
+                <CheckMark delay={(index % 3) * 130} />
                 <h3 className="mt-6 text-fluid-lg leading-snug font-semibold text-balance">
                   {item.title}
                 </h3>
