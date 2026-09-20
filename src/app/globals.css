@@ -271,8 +271,13 @@
 }
 
 /* --- Motivos de los servicios --- */
+/* Todo arranca invisible: lo trae su propia animación. */
 .motif .motif-item,
-.motif .motif-draw {
+.motif .motif-type,
+.motif .motif-dot,
+.motif .motif-flow,
+.motif .motif-breathe,
+.motif .motif-orbit {
   opacity: 0;
 }
 
@@ -280,22 +285,17 @@
   animation: motif-pop 0.7s var(--ease-out-expo) both;
 }
 
-.motif[data-active="true"] .motif-draw {
-  animation: motif-draw 1.1s var(--ease-out-expo) both;
-  /* Los trazos llevan pathLength="1", así que una sola longitud sirve para
-     todos: sin esto, cada curva se dibujaba hasta donde le alcanzaba. */
-  stroke-dasharray: 1;
-}
-
-/* Escalonado: las piezas se arman en orden, no todas de golpe. */
-.motif[data-active="true"] > svg > *:nth-child(1) { animation-delay: 0ms; }
-.motif[data-active="true"] > svg > *:nth-child(2) { animation-delay: 70ms; }
-.motif[data-active="true"] > svg > *:nth-child(3) { animation-delay: 140ms; }
-.motif[data-active="true"] > svg > *:nth-child(4) { animation-delay: 210ms; }
-.motif[data-active="true"] > svg > *:nth-child(5) { animation-delay: 280ms; }
-.motif[data-active="true"] > svg > *:nth-child(6) { animation-delay: 350ms; }
-.motif[data-active="true"] > svg > *:nth-child(7) { animation-delay: 420ms; }
-.motif[data-active="true"] > svg > *:nth-child(8) { animation-delay: 490ms; }
+/* Escalonado de la entrada: las piezas se arman en orden, no todas de golpe.
+   Sólo afecta a las piezas fijas; las que tienen gesto propio llevan su
+   retraso escrito en el elemento. */
+.motif[data-active="true"] .motif-item:nth-child(1) { animation-delay: 0ms; }
+.motif[data-active="true"] .motif-item:nth-child(2) { animation-delay: 70ms; }
+.motif[data-active="true"] .motif-item:nth-child(3) { animation-delay: 140ms; }
+.motif[data-active="true"] .motif-item:nth-child(4) { animation-delay: 210ms; }
+.motif[data-active="true"] .motif-item:nth-child(5) { animation-delay: 280ms; }
+.motif[data-active="true"] .motif-item:nth-child(6) { animation-delay: 350ms; }
+.motif[data-active="true"] .motif-item:nth-child(7) { animation-delay: 420ms; }
+.motif[data-active="true"] .motif-item:nth-child(8) { animation-delay: 490ms; }
 
 @keyframes motif-pop {
   from {
@@ -305,6 +305,107 @@
   to {
     opacity: 1;
     transform: none;
+  }
+}
+
+/* Renglones que se escriben, se quedan un rato y se borran para volver a empezar. */
+.motif[data-active="true"] .motif-type {
+  stroke-dasharray: 1;
+  animation: motif-type 4.6s var(--ease-out-quint) infinite both;
+}
+
+@keyframes motif-type {
+  0% {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+  5% {
+    opacity: 1;
+  }
+  24% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  80% {
+    stroke-dashoffset: 0;
+    opacity: 1;
+  }
+  92% {
+    stroke-dashoffset: 0;
+    opacity: 0;
+  }
+  100% {
+    stroke-dashoffset: 1;
+    opacity: 0;
+  }
+}
+
+/* Los tres puntos de "está escribiendo". */
+.motif[data-active="true"] .motif-dot {
+  animation: motif-dot 1.5s ease-in-out infinite both;
+}
+
+@keyframes motif-dot {
+  0%,
+  55%,
+  100% {
+    opacity: 0.35;
+    transform: translateY(0);
+  }
+  28% {
+    opacity: 1;
+    transform: translateY(-4px);
+  }
+}
+
+/* Datos circulando por las conexiones. El desplazamiento es múltiplo exacto
+   del patrón de guiones, así el bucle no tiene salto. */
+.motif[data-active="true"] .motif-flow {
+  stroke-dasharray: 0.06 0.1;
+  animation: motif-flow 3.6s linear infinite both;
+}
+
+@keyframes motif-flow {
+  from {
+    opacity: 1;
+    stroke-dashoffset: 0.32;
+  }
+  to {
+    opacity: 1;
+    stroke-dashoffset: 0;
+  }
+}
+
+/* El punto que recorre el ciclo de automatización. */
+.motif[data-active="true"] .motif-orbit {
+  animation: motif-orbit 7s linear infinite both;
+}
+
+@keyframes motif-orbit {
+  from {
+    opacity: 1;
+    transform: rotate(0deg);
+  }
+  to {
+    opacity: 1;
+    transform: rotate(360deg);
+  }
+}
+
+/* El elemento "encendido" de cada motivo respira. */
+.motif[data-active="true"] .motif-breathe {
+  animation:
+    motif-pop 0.7s var(--ease-out-expo) both,
+    motif-breathe 3.6s ease-in-out 0.7s infinite;
+}
+
+@keyframes motif-breathe {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
   }
 }
 
@@ -320,116 +421,6 @@
   to {
     transform: rotate(360deg);
   }
-}
-
-@keyframes motif-draw {
-  from {
-    opacity: 0;
-    stroke-dashoffset: 1;
-  }
-  to {
-    opacity: 1;
-    stroke-dashoffset: 0;
-  }
-}
-
-/* --- Tarjetas del diagnóstico --- */
-.problem-grid {
-  perspective: 1200px;
-}
-
-.problem-card {
-  --mx: 50%;
-  --my: 50%;
-  --rx: 0deg;
-  --ry: 0deg;
-  opacity: 0;
-}
-
-/* La entrada arranca cuando la grilla entra en pantalla. */
-.problem-grid[data-revealed="true"] .problem-card {
-  animation: card-in 0.9s var(--ease-out-expo) both;
-}
-
-@keyframes card-in {
-  from {
-    opacity: 0;
-    transform: translateY(2.5rem) scale(0.97);
-  }
-  to {
-    opacity: 1;
-    transform: none;
-  }
-}
-
-/* La inclinación vive en el hijo: si compartiera elemento con la animación de
-   entrada, el fill-mode la pisaría y el 3D nunca se aplicaría. */
-.problem-card-inner {
-  position: relative;
-  height: 100%;
-  overflow: hidden;
-  border-radius: var(--radius-card);
-  border: 1px solid rgb(255 255 255 / 0.08);
-  /* Fondo propio y algo opaco: con el campo tecnológico detrás, un panel casi
-     transparente dejaba pasar la grilla por encima del texto chico. */
-  background-color: rgb(9 7 20 / 0.62);
-  padding: 2rem;
-  transform: rotateX(var(--rx)) rotateY(var(--ry));
-  transition:
-    transform 0.45s var(--ease-out-expo),
-    background-color 0.5s ease;
-}
-
-@media (min-width: 768px) {
-  .problem-card-inner {
-    padding: 2.5rem;
-  }
-}
-
-.problem-card:hover .problem-card-inner {
-  background-color: rgb(14 11 28 / 0.72);
-}
-
-/* Foco que sigue al cursor dentro de la tarjeta. */
-.problem-card-glow {
-  position: absolute;
-  inset: 0;
-  opacity: 0;
-  transition: opacity 0.45s ease;
-  background: radial-gradient(
-    340px circle at var(--mx) var(--my),
-    rgb(78 20 255 / 0.20),
-    transparent 70%
-  );
-}
-
-/* Mismo degradado, recortado al contorno: ilumina sólo el tramo de borde más
-   cercano al puntero. La máscara deja ver el relleno sólo en el 1px del borde. */
-.problem-card-border {
-  position: absolute;
-  inset: 0;
-  border-radius: var(--radius-card);
-  padding: 1px;
-  opacity: 0;
-  transition: opacity 0.45s ease;
-  background: radial-gradient(
-    260px circle at var(--mx) var(--my),
-    var(--color-accent),
-    transparent 65%
-  );
-  -webkit-mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  -webkit-mask-composite: xor;
-  mask:
-    linear-gradient(#000 0 0) content-box,
-    linear-gradient(#000 0 0);
-  mask-composite: exclude;
-}
-
-.problem-card:hover .problem-card-glow,
-.problem-card:hover .problem-card-border {
-  opacity: 1;
 }
 
 /* --- Proceso paso a paso --- */
@@ -499,11 +490,22 @@
      traiga, quedarían invisibles para siempre. Se muestran de entrada. */
   .reveal,
   .motif .motif-item,
-  .motif .motif-draw,
+  .motif .motif-type,
+  .motif .motif-dot,
+  .motif .motif-flow,
+  .motif .motif-breathe,
+  .motif .motif-orbit,
   .problem-card {
-    opacity: 1;
-    transform: none;
+    opacity: 1 !important;
+    transform: none !important;
     filter: none;
+  }
+
+  /* Los trazos se muestran completos en vez de quedar a medio dibujar. */
+  .motif .motif-type,
+  .motif .motif-flow {
+    stroke-dasharray: none !important;
+    stroke-dashoffset: 0 !important;
   }
 
   .problem-card-inner {

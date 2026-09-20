@@ -8,22 +8,14 @@ import { usePrefersReducedMotion } from "@/hooks/use-reduced-motion";
  * Campo de fondo para todo lo que va debajo del hero.
  *
  * Tiene dos regímenes. Del diagnóstico a servicios es una grilla técnica con
- * nodos que laten. De proceso hasta el pie es un campo de dígitos que caen,
- * como una lectura de datos. Al cruzar de uno a otro la figura se desarma
- * —las celdas se dispersan— y se vuelve a armar con la otra forma.
+ * nodos que laten. De proceso hasta el pie es una placa de circuito: trazas
+ * con codos y puntos de soldadura, recorridas por un pulso diagonal. Al cruzar
+ * de uno a otro la figura se desarma —las celdas se dispersan— y se vuelve a
+ * armar con la otra forma.
  *
  * Nunca dibuja al mismo tiempo que el campo del hero: mientras el hero está en
  * pantalla este bucle queda frenado.
  */
-
-/**
- * Tipografía de 3x5 para los dígitos, empaquetada como bits en un número.
- * GLSL ES 1.00 no tiene operaciones de bits sobre enteros, así que cada bit se
- * extrae dividiendo por potencias de dos; por eso el mapa viaja como números.
- */
-const DIGIT_FONT = [
-  31599, 29850, 29671, 31207, 18925, 31183, 31695, 18727, 31727, 31215,
-];
 
 const vertex = /* glsl */ `
   attribute vec2 position;
@@ -47,7 +39,6 @@ const fragment = /* glsl */ `
   uniform float uPulse;
   uniform float uFade;
   uniform float uMorph;
-  uniform float uFont[10];
 
   varying vec2 vUv;
 
@@ -77,22 +68,12 @@ const fragment = /* glsl */ `
     return value;
   }
 
-  /** El índice del bucle sí es índice constante, que es lo que exige GLSL ES 1.00. */
-  float fontOf(float d) {
-    // Ojo con el nombre: "packed" es palabra reservada en GLSL y no compila.
-    float bits = 0.0;
-    for (int i = 0; i < 10; i++) {
-      if (abs(float(i) - d) < 0.5) bits = uFont[i];
-    }
-    return bits;
-  }
-
-  /** Devuelve 1.0 si el píxel del dígito está encendido. */
-  float digitPixel(float d, vec2 uv) {
-    if (uv.x < 0.0 || uv.x > 1.0 || uv.y < 0.0 || uv.y > 1.0) return 0.0;
-    vec2 cellPixel = floor(vec2(uv.x * 3.0, (1.0 - uv.y) * 5.0));
-    float index = cellPixel.y * 3.0 + cellPixel.x;
-    return mod(floor(fontOf(d) / pow(2.0, index)), 2.0);
+  /** Distancia a un segmento: con esto se dibujan las trazas. */
+  float sdSegment(vec2 p, vec2 a, vec2 b) {
+    vec2 pa = p - a;
+    vec2 ba = b - a;
+    float h = clamp(dot(pa, ba) / dot(ba, ba), 0.0, 1.0);
+    return length(pa - ba * h);
   }
 
   void main() {
@@ -137,39 +118,52 @@ const fragment = /* glsl */ `
       col += accent * scan * 0.10 * amount;
     }
 
-    // --- Régimen 2: campo de dígitos ---
+    // --- Régimen 2: placa de circuito ---
     if (uMorph > 0.005) {
-      float cols = uDensity;
-      vec2 gp = p * cols + vec2(0.0, -t * 0.12);
+      vec2 gp = p * uDensity + vec2(t * 0.012, -t * 0.008);
       vec2 cell = floor(gp);
-      vec2 f = fract(gp);
-
-      float rnd = hash(cell + 11.3);
+      vec2 f = fract(gp) - 0.5;
 
       // Misma dispersión que la grilla, para que el desarme se lea continuo.
       f += (vec2(hash(cell), hash(cell + 5.1)) - 0.5) * scatter * 1.6;
 
-      // Margen dentro de la celda para que los dígitos no se toquen.
-      vec2 uv = (f - 0.5) * 1.7 + 0.5;
+      // Cada celda saca una pieza de trazado: recta, codo o nada. Repetido
+      // sobre la grilla, el conjunto se lee como el ruteo de una placa.
+      float r = hash(cell);
+      float d = 10.0;
+      if (r < 0.18) {
+        d = sdSegment(f, vec2(-0.5, 0.0), vec2(0.5, 0.0));
+      } else if (r < 0.36) {
+        d = sdSegment(f, vec2(0.0, -0.5), vec2(0.0, 0.5));
+      } else if (r < 0.50) {
+        d = min(sdSegment(f, vec2(-0.5, 0.0), vec2(0.0, 0.0)),
+                sdSegment(f, vec2(0.0, 0.0), vec2(0.0, 0.5)));
+      } else if (r < 0.64) {
+        d = min(sdSegment(f, vec2(0.5, 0.0), vec2(0.0, 0.0)),
+                sdSegment(f, vec2(0.0, 0.0), vec2(0.0, -0.5)));
+      } else if (r < 0.75) {
+        d = min(sdSegment(f, vec2(-0.5, 0.0), vec2(0.0, 0.0)),
+                sdSegment(f, vec2(0.0, 0.0), vec2(0.0, -0.5)));
+      } else if (r < 0.86) {
+        d = min(sdSegment(f, vec2(0.5, 0.0), vec2(0.0, 0.0)),
+                sdSegment(f, vec2(0.0, 0.0), vec2(0.0, 0.5)));
+      }
 
-      // Cada celda cambia de dígito a su propio ritmo.
-      float rate = 1.5 + rnd * 5.0;
-      float d = mod(floor(t * rate + rnd * 37.0), 10.0);
-      float px = digitPixel(d, uv);
+      float trace = smoothstep(0.055, 0.018, d);
 
-      // Lluvia: una cabeza brillante baja por cada columna y deja estela.
-      float colSeed = hash(vec2(cell.x, 3.7));
-      float speed = 0.22 + colSeed * 0.55;
-      float headY = 1.5 - fract(colSeed * 7.0 + t * speed) * 3.0;
-      float below = headY - p.y;
-      float trail = below > 0.0 ? exp(-below * 2.4) : 0.0;
+      // Algunas celdas llevan una isleta, como los puntos de soldadura.
+      float padSeed = hash(cell + 3.9);
+      float ring = abs(length(f) - 0.17);
+      float pad = padSeed > 0.88 ? smoothstep(0.030, 0.006, ring) : 0.0;
 
-      float bright = 0.055 + trail * 0.85 + step(0.978, rnd) * 0.28;
-      vec3 tone = mix(accent, lav, min(trail * 1.4, 1.0));
+      // Un pulso diagonal recorre la placa encendiendo los tramos que toca.
+      float wave = sin((cell.x * 0.55 + cell.y * 0.4) - t * 1.5) * 0.5 + 0.5;
+      float spark = pow(wave, 7.0);
 
-      // Factor bajo a propósito: a plena intensidad los dígitos competían con
-      // el texto en vez de acompañarlo.
-      col += tone * px * bright * uMorph * uEnergy * 0.34;
+      vec3 tone = mix(accent, lav, spark);
+      float lit = trace * (0.32 + spark * 1.7) + pad * (0.5 + spark * 1.6);
+
+      col += tone * lit * uMorph * uEnergy * 0.30;
     }
 
     // Anillo que se expande al cambiar de sección.
@@ -200,12 +194,10 @@ const SECTION_LOOKS: Record<
 > = {
   diagnostico: { density: 8, energy: 0.8, hue: 0.0, morph: 0 },
   servicios: { density: 15, energy: 1.0, hue: 0.18, morph: 0 },
-  // En el régimen de dígitos la densidad es mucho mayor: son celdas chicas,
-  // una trama de datos, no números grandes sobre el texto.
-  proceso: { density: 44, energy: 1.0, hue: 0.3, morph: 1 },
-  nosotros: { density: 52, energy: 0.95, hue: 0.12, morph: 1 },
-  preguntas: { density: 36, energy: 0.7, hue: 0.05, morph: 1 },
-  contacto: { density: 46, energy: 1.15, hue: 0.0, morph: 1 },
+  proceso: { density: 11, energy: 1.0, hue: 0.3, morph: 1 },
+  nosotros: { density: 14, energy: 0.95, hue: 0.12, morph: 1 },
+  preguntas: { density: 8, energy: 0.7, hue: 0.05, morph: 1 },
+  contacto: { density: 12, energy: 1.15, hue: 0.0, morph: 1 },
 };
 
 const DEFAULT_LOOK = { density: 9, energy: 0.8, hue: 0, morph: 0 };
@@ -259,7 +251,6 @@ export function SectionsField({ heroId = "hero" }: { heroId?: string }) {
         uPulse: { value: 0 },
         uFade: { value: 0 },
         uMorph: { value: 0 },
-        uFont: { value: DIGIT_FONT },
       },
     });
     const mesh = new Mesh(gl, { geometry: new Triangle(gl), program });
@@ -285,15 +276,15 @@ export function SectionsField({ heroId = "hero" }: { heroId?: string }) {
     /**
      * La densidad se mide contra el alto de la pantalla. En un teléfono, que es
      * angosto y alto, esa misma densidad da menos columnas y los dígitos quedan
-     * gruesos al lado del texto. Se compensa apretando la trama y bajando el
-     * brillo, sólo en el régimen de dígitos: la grilla ahí se ve bien como está.
+     * gruesas al lado del texto. Se compensa apretando la trama y bajando el
+     * brillo, sólo en el segundo régimen: la grilla ahí se ve bien como está.
      */
     const applyLook = (id: string) => {
       const look = SECTION_LOOKS[id] ?? DEFAULT_LOOK;
       const narrow = window.innerWidth < 768;
-      const isDigits = look.morph === 1;
-      target.density = look.density * (narrow && isDigits ? 1.5 : 1);
-      target.energy = look.energy * (narrow && isDigits ? 0.72 : 1);
+      const isCircuit = look.morph === 1;
+      target.density = look.density * (narrow && isCircuit ? 1.15 : 1);
+      target.energy = look.energy * (narrow && isCircuit ? 0.85 : 1);
       target.hue = look.hue;
       target.morph = look.morph;
     };

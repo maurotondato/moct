@@ -178,7 +178,7 @@ export function Services({
                     <ServiceVisual
                       index={index}
                       active
-                      className="my-8 aspect-square w-40 lg:hidden"
+                      className="my-9 aspect-square w-52 lg:hidden"
                     />
 
                     <p className="mt-5 max-w-xl text-fluid-base leading-relaxed text-chalk-dim text-pretty">
