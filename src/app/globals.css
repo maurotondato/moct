@@ -370,7 +370,9 @@
   overflow: hidden;
   border-radius: var(--radius-card);
   border: 1px solid rgb(255 255 255 / 0.08);
-  background-color: rgb(255 255 255 / 0.02);
+  /* Fondo propio y algo opaco: con el campo tecnológico detrás, un panel casi
+     transparente dejaba pasar la grilla por encima del texto chico. */
+  background-color: rgb(9 7 20 / 0.62);
   padding: 2rem;
   transform: rotateX(var(--rx)) rotateY(var(--ry));
   transition:
@@ -385,7 +387,7 @@
 }
 
 .problem-card:hover .problem-card-inner {
-  background-color: rgb(255 255 255 / 0.04);
+  background-color: rgb(14 11 28 / 0.72);
 }
 
 /* Foco que sigue al cursor dentro de la tarjeta. */

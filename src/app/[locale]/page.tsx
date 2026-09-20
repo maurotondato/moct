@@ -4,6 +4,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import { SiteHeader } from "@/components/layout/site-header";
 import { SiteFooter } from "@/components/layout/site-footer";
 import { Hero } from "@/components/hero/hero";
+import { SectionsField } from "@/components/backgrounds/sections-field";
 import { Problems } from "@/components/sections/problems";
 import { Services } from "@/components/sections/services";
 import { Process } from "@/components/sections/process";
@@ -21,6 +22,9 @@ export default async function HomePage({ params }: PageProps<"/[locale]">) {
 
   return (
     <>
+      {/* Campo de fondo para todo lo que va debajo del hero. Se frena mientras
+          el hero está en pantalla, así nunca hay dos shaders a la vez. */}
+      <SectionsField />
       <SiteHeader dict={dict} locale={locale} />
       <main className="flex-1">
         <Hero dict={dict} locale={locale} />

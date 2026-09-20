@@ -207,7 +207,7 @@ export function Services({
         </div>
 
         <Reveal className="mt-20 lg:mt-8">
-          <div className="flex flex-col items-start gap-5 rounded-card border border-white/10 bg-white/[0.02] p-8 sm:flex-row sm:items-center sm:justify-between">
+          <div className="flex flex-col items-start gap-5 rounded-card border border-white/10 bg-ink-950/60 p-8 sm:flex-row sm:items-center sm:justify-between">
             <p className="max-w-lg text-fluid-base text-chalk-dim text-pretty">
               {dict.services.footnote}
             </p>

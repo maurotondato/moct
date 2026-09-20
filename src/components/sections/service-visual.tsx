@@ -40,7 +40,7 @@ function AppsMotif() {
       <circle className="motif-item" cx="58" cy="75" r="4" fill="currentColor" />
       <circle className="motif-item" cx="74" cy="75" r="4" fill="currentColor" />
       <path className="motif-item" d="M48 120h90M48 144h130M48 168h72" stroke="currentColor" strokeWidth="2" strokeLinecap="round" />
-      <rect className="motif-item" x="196" y="118" width="102" height="168" rx="22" fill="var(--color-ink-950)" stroke="var(--color-accent)" strokeWidth="2" />
+      <rect className="motif-item" x="196" y="118" width="102" height="168" rx="22" fill="var(--color-ink-950)" fillOpacity="0.55" stroke="var(--color-accent)" strokeWidth="2" />
       <path className="motif-item" d="M232 136h30" stroke="var(--color-accent)" strokeWidth="2.5" strokeLinecap="round" />
       <path className="motif-item" d="M216 174h62M216 198h44M216 222h62" stroke="var(--color-accent)" strokeWidth="2" strokeLinecap="round" strokeOpacity="0.65" />
     </svg>
@@ -51,9 +51,9 @@ function AutomationMotif() {
   return (
     <svg {...SVG_PROPS}>
       <circle className="motif-item motif-spin" cx="160" cy="160" r="96" stroke="currentColor" strokeWidth="2" strokeDasharray="14 12" />
-      <circle className="motif-item" cx="160" cy="64" r="22" fill="var(--color-ink-950)" stroke="var(--color-accent)" strokeWidth="2" />
-      <circle className="motif-item" cx="243" cy="208" r="22" fill="var(--color-ink-950)" stroke="currentColor" strokeWidth="2" />
-      <circle className="motif-item" cx="77" cy="208" r="22" fill="var(--color-ink-950)" stroke="currentColor" strokeWidth="2" />
+      <circle className="motif-item" cx="160" cy="64" r="22" fill="var(--color-ink-950)" fillOpacity="0.55" stroke="var(--color-accent)" strokeWidth="2" />
+      <circle className="motif-item" cx="243" cy="208" r="22" fill="var(--color-ink-950)" fillOpacity="0.55" stroke="currentColor" strokeWidth="2" />
+      <circle className="motif-item" cx="77" cy="208" r="22" fill="var(--color-ink-950)" fillOpacity="0.55" stroke="currentColor" strokeWidth="2" />
       <path className="motif-item" d="M150 64h20M160 54v20" stroke="var(--color-accent)" strokeWidth="2.5" strokeLinecap="round" />
       <path className="motif-item" d="M186 96l22-16-4 22" stroke="var(--color-accent)" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
       <circle className="motif-item" cx="160" cy="160" r="34" fill="var(--color-accent)" fillOpacity="0.14" stroke="var(--color-accent)" strokeWidth="2" />

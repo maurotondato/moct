@@ -25,7 +25,10 @@ export function Hero({ dict, locale }: { dict: Dictionary; locale: Locale }) {
     T.headline + dict.hero.headline.replace(/\s/g, "").length * T.headlineStagger + 120;
 
   return (
-    <section className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden pt-32 pb-28">
+    <section
+      id="hero"
+      className="relative isolate flex min-h-[100svh] flex-col justify-center overflow-hidden pt-32 pb-28"
+    >
       <HeroField />
 
       {/* Velo de legibilidad: oscurece el flanco del texto y funde el borde

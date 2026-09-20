@@ -86,8 +86,10 @@ export function Contact({ dict }: { dict: Dictionary }) {
     }
   }
 
+  // Panel oscuro propio: con el campo tecnológico detrás, un fondo casi
+  // transparente dejaba los textos de ayuda ilegibles.
   const fieldClass =
-    "w-full rounded-xl border bg-white/[0.02] px-4 py-3.5 text-fluid-sm text-chalk outline-none transition-all duration-300 placeholder:text-chalk-muted/70 focus:border-accent focus:bg-white/[0.04] focus:ring-4 focus:ring-accent/15";
+    "w-full rounded-xl border bg-ink-950/70 px-4 py-3.5 text-fluid-sm text-chalk outline-none transition-all duration-300 placeholder:text-chalk-muted focus:border-accent focus:bg-ink-950/85 focus:ring-4 focus:ring-accent/15";
 
   return (
     <section

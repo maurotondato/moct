@@ -22,7 +22,7 @@ export function WhyUs({ dict }: { dict: Dictionary }) {
         <ul className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
           {dict.whyUs.items.map((item, index) => (
             <Reveal as="li" key={item.title} delay={(index % 3) * 90}>
-              <div className="group relative h-full rounded-card border border-white/10 bg-white/[0.02] p-8 transition-all duration-500 ease-out-expo hover:-translate-y-1 hover:border-accent/40 hover:bg-white/[0.04]">
+              <div className="group relative h-full rounded-card border border-white/10 bg-ink-950/62 p-8 transition-all duration-500 ease-out-expo hover:-translate-y-1 hover:border-accent/40 hover:bg-ink-900/75">
                 {/* Resplandor que aparece al pasar el mouse. */}
                 <span
                   aria-hidden
