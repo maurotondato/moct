@@ -20,10 +20,17 @@ export function SiteFooter({
     { href: `/${locale}#contacto`, label: dict.nav.contact },
   ];
 
+  // Páginas propias, separadas de los anclajes de la portada.
+  const pages = [
+    { href: `/${locale}/about`, label: dict.footer.about },
+    { href: `/${locale}/contact`, label: dict.nav.contact },
+    { href: `/${locale}/privacy`, label: dict.footer.privacy },
+  ];
+
   return (
     <footer className="border-t border-white/10 py-16">
       <div className="container-moct">
-        <div className="grid gap-12 md:grid-cols-[1.4fr_1fr_1fr]">
+        <div className="grid gap-12 md:grid-cols-2 lg:grid-cols-[1.3fr_1fr_1fr_1fr]">
           <div>
             <Logo className="w-36 text-chalk" />
             <p className="mt-6 max-w-xs text-fluid-sm text-chalk-dim text-pretty">
@@ -43,6 +50,24 @@ export function SiteFooter({
                     className="text-fluid-sm text-chalk-dim transition-colors duration-300 hover:text-accent-soft"
                   >
                     {link.label}
+                  </Link>
+                </li>
+              ))}
+            </ul>
+          </nav>
+
+          <nav aria-label={dict.footer.company}>
+            <h2 className="font-mono text-fluid-xs tracking-[0.25em] text-chalk-muted uppercase">
+              {dict.footer.company}
+            </h2>
+            <ul className="mt-5 space-y-3">
+              {pages.map((page) => (
+                <li key={page.href}>
+                  <Link
+                    href={page.href}
+                    className="text-fluid-sm text-chalk-dim transition-colors duration-300 hover:text-accent-soft"
+                  >
+                    {page.label}
                   </Link>
                 </li>
               ))}

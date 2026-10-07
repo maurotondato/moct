@@ -9,10 +9,18 @@ export const site = {
   shortName: "moct",
   tagline: "Soluciones que impulsan",
   legalName: "moctLab.", // TODO: razón social para el footer y el JSON-LD
-  // TODO: dominio real. Se usa en canonical, OG, sitemap y robots.
-  // Se puede pisar por entorno para que cada despliegue (Pages, preview, prod)
-  // emita sus propios canonical en vez de mentir apuntando a otro lado.
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://moct.com",
+  /**
+   * Dirección a nivel provincia: es lo que las IA usan para verificar que la
+   * empresa existe. La provincia está deducida del código de área del WhatsApp
+   * (2223, Buenos Aires) — confirmar antes de publicar.
+   */
+  address: {
+    region: "Buenos Aires",
+    country: "AR",
+  },
+  // Se puede pisar por entorno para que un despliegue de prueba emita sus
+  // propios canonical en vez de mentir apuntando al dominio de producción.
+  url: process.env.NEXT_PUBLIC_SITE_URL ?? "https://moctlab.com.ar",
   foundingYear: 2026,
   contact: {
     email: "moct.ventas@gmail.com",

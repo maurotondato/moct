@@ -13,7 +13,7 @@
  *    bloqueado, el `<meta refresh>` dentro de `<noscript>` lleva al idioma
  *    por defecto.
  */
-import { writeFileSync, existsSync } from "node:fs";
+import { writeFileSync, existsSync, mkdirSync } from "node:fs";
 import { join } from "node:path";
 
 const outDir = process.argv[2] ?? "out";
@@ -58,4 +58,38 @@ const redirect = `<!doctype html>
 `;
 
 writeFileSync(join(outDir, "index.html"), redirect);
-console.log(`Listo: .nojekyll e index.html escritos en ${outDir}/`);
+
+/**
+ * Atajos en la raíz para las rutas que los agentes prueban de memoria:
+ * /about, /contact y /privacy. Las páginas reales viven bajo el idioma, así
+ * que acá sólo va un reenvío, marcado noindex y con el canonical apuntando a
+ * la versión buena para que no compita con ella.
+ */
+const shortcuts = ["about", "contact", "privacy"];
+
+for (const slug of shortcuts) {
+  const target = `${basePath}/${defaultLocale}/${slug}/`;
+  const html = `<!doctype html>
+<html lang="${defaultLocale}">
+  <head>
+    <meta charset="utf-8" />
+    <title>moctLab.</title>
+    <meta name="robots" content="noindex, follow" />
+    <link rel="canonical" href="${target}" />
+    <noscript>
+      <meta http-equiv="refresh" content="0; url=${target}" />
+    </noscript>
+    <script>location.replace(${JSON.stringify("")} + "${target}");</script>
+  </head>
+  <body>
+    <p>Esta página vive en <a href="${target}">${target}</a>.</p>
+  </body>
+</html>
+`;
+  mkdirSync(join(outDir, slug), { recursive: true });
+  writeFileSync(join(outDir, slug, "index.html"), html);
+}
+
+console.log(
+  `Listo: .nojekyll, index.html y ${shortcuts.length} atajos escritos en ${outDir}/`,
+);

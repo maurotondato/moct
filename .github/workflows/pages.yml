@@ -1,9 +1,8 @@
-# Publica el sitio en GitHub Pages.
+# Publica el sitio en GitHub Pages, en el dominio moctlab.com.ar.
 #
 # Pages sirve archivos estáticos, así que acá se corre el export
-# (`npm run build:pages`) y se sube la carpeta `out/`. El basePath sale del
-# nombre del repo, porque un repo de proyecto se sirve desde
-# https://<usuario>.github.io/<repo>/ y no desde la raíz del dominio.
+# (`npm run build:pages`) y se sube la carpeta `out/`. El dominio propio se
+# declara en public/CNAME, que viaja dentro del artefacto.
 name: Deploy to GitHub Pages
 
 on:
@@ -43,8 +42,9 @@ jobs:
 
       - name: Build estático
         env:
-          NEXT_PUBLIC_BASE_PATH: /${{ github.event.repository.name }}
-          NEXT_PUBLIC_SITE_URL: ${{ steps.pages.outputs.base_url }}
+          # Dominio propio: el sitio cuelga de la raíz, sin subdirectorio, así
+          # que NEXT_PUBLIC_BASE_PATH queda sin definir a propósito.
+          NEXT_PUBLIC_SITE_URL: https://moctlab.com.ar
         run: npm run build:pages
 
       - uses: actions/upload-pages-artifact@v3

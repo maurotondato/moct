@@ -8,7 +8,7 @@ import { hreflang, isLocale, locales, type Locale } from "@/i18n/config";
 import { getDictionary } from "@/i18n/get-dictionary";
 import {
   buildAlternates,
-  isPreviewDeploy,
+  isSearchBlocked,
   organizationJsonLd,
   websiteJsonLd,
 } from "@/lib/seo";
@@ -68,7 +68,7 @@ export async function generateMetadata({
       title: dict.meta.title,
       description: dict.meta.description,
     },
-    robots: isPreviewDeploy
+    robots: isSearchBlocked
       ? { index: false, follow: false }
       : {
           index: true,

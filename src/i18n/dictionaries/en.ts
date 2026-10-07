@@ -243,6 +243,96 @@ export const en: Dictionary = {
     builtLine: "Custom software, automation and AI for business.",
     sections: "Sections",
     contactTitle: "Contact",
+    company: "Company",
+    about: "About moctLab",
+    privacy: "Privacy",
+  },
+
+pages: {
+    backToHome: "Back to home",
+    about: {
+      eyebrow: "Who we are",
+      title: "About moctLab",
+      intro:
+        "moctLab is an Argentine software company. We build custom systems, automation and applied artificial intelligence for companies that need technology to solve a concrete problem, not add a new one.",
+      sections: [
+        {
+          heading: "What we do",
+          body: "We work across five areas: custom management software, web and mobile applications, automation of repetitive processes, WhatsApp assistants and AI chatbots, and integration between systems that currently don't talk to each other. The common thread is that everything starts by understanding how the company operates before a line of code gets written. Most projects that reach us don't begin with a technical request but with an irritation: someone types data by hand every day, enquiries pile up unanswered, or two systems that should share information force a person to act as the bridge between them.",
+        },
+        {
+          heading: "How we work",
+          body: "The first assessment is free and commits you to nothing: we sit down to understand the problem and, if there is something worth building, we say so. Then we send a written proposal with fixed scope, timeline and price. If the scope doesn't change, neither does the number. During the build there are partial deliveries every two weeks, so the client tries working software instead of reading progress reports. When we finish we put the system into production, train the team and stay close for the first months.",
+        },
+        {
+          heading: "What sets us apart",
+          body: "The source code, the access credentials and the documentation all end up in the client's hands. We don't work with models that leave a company tied to us just to keep using what it paid for: if one day they want to continue with another team, they can. There are no layers of account managers either — the person who understands the problem is the one writing the solution. And if what we're asked for isn't the right call, or an existing tool solves it cheaper, we say so even when that means losing the project.",
+        },
+        {
+          heading: "Where we are",
+          body: "We are a small team based in the province of Buenos Aires, Argentina, working remotely with companies across the country. We work in Spanish and English. Alongside client projects we build products of our own: that experience of taking something from idea to production, with real users on it, is what we bring to every engagement.",
+        },
+      ],
+    },
+    contact: {
+      eyebrow: "Let's talk",
+      title: "Contact",
+      intro:
+        "WhatsApp is the fastest way to reach us. We reply within 24 business hours and the first assessment is free and without commitment.",
+      sections: [
+        {
+          heading: "Where to write",
+          body: "WhatsApp is where we reply fastest and the best place to start if you want an answer the same day. Email works just as well for longer enquiries or when you need to attach documentation. We're on Instagram too, although we're slower there. All three reach the same person: there is no call centre and no form landing in an inbox nobody checks.",
+        },
+        {
+          heading: "What to tell us",
+          body: "You don't need to know what solution you need; a good part of our job is untangling the problem before it turns into a badly framed request. Telling us what is costing you time or money is enough to start. If you can add which systems you use today, how many people work with them and which part of the process hurts most, the first exchange goes much further and we can reach a concrete proposal faster.",
+        },
+        {
+          heading: "What happens next",
+          body: "We reply to arrange a short call, around thirty minutes, where we understand the operation and tell you frankly whether there is something worth doing. If there is, you get a written proposal with fixed scope, timeline and price. If there isn't, or if an existing tool would serve you better, we say that too. None of this costs anything until you sign the proposal.",
+        },
+      ],
+      channels: "Channels",
+      whatsappLabel: "WhatsApp",
+      emailLabel: "Email",
+      instagramLabel: "Instagram",
+      formCta: "Or fill in the form",
+    },
+    privacy: {
+      eyebrow: "Transparency",
+      title: "Privacy policy",
+      intro:
+        "This site collects as little data as possible: no cookies, no analytics tools, and nothing you type into the form is stored.",
+      updatedLabel: "Last updated",
+      updated: "October 2026",
+      sections: [
+        {
+          heading: "What we collect",
+          body: "The site sets no cookies and uses no analytics, audience measurement or advertising services. There is no cross-session tracking and no browsing profiles. Fonts are served from our own domain, so your browser makes no requests to third-party servers in order to render the page. In practice, browsing this site leaves us no record of your visit beyond what we describe below.",
+        },
+        {
+          heading: "The contact form",
+          body: "The form sends nothing to our servers or to anyone else's. What you fill in is used only to compose, inside your own browser, a WhatsApp message that opens with the text already written. You decide whether to send it. If you do, that data lives in the WhatsApp conversation, subject to the privacy policies of WhatsApp and Meta, and we keep it for as long as the commercial exchange lasts.",
+        },
+        {
+          heading: "Hosting and technical logs",
+          body: "The site is hosted on GitHub Pages. Like any web server, the hosting provider logs technical connection data, including IP address and browser type, for security and service operation. Those logs belong to the provider and are governed by its own privacy policy; we do not access them or use them for any purpose.",
+        },
+        {
+          heading: "Third-party links",
+          body: "The site links to external services such as WhatsApp and Instagram. Following those links takes you off this site and under each platform's own privacy policy, over which we have no control. We recommend reading them if you have questions about how they handle your data.",
+        },
+        {
+          heading: "Your rights",
+          body: "Under Argentina's Personal Data Protection Act 25.326, you have the right to access, rectify and delete the personal data we hold about you, free of charge. If you wrote to us at some point and want the conversation and associated data deleted, ask at the contact address below and we will do it. The Agency for Access to Public Information, the body enforcing the act, handles complaints from anyone whose rights are affected.",
+        },
+        {
+          heading: "Changes and contact",
+          body: "If we change how we handle data, we update this page and its last-modified date. For any privacy question, write to our contact address and we reply within 24 business hours.",
+        },
+      ],
+    },
   },
 
   common: {

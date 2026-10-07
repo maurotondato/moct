@@ -12,6 +12,12 @@ const isPagesBuild = process.env.DEPLOY_TARGET === "github-pages";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
 
 const nextConfig: NextConfig = {
+  experimental: {
+    // Necesario porque la raíz de rutas es un segmento dinámico ([locale]):
+    // sin esto no hay forma de componer un 404 propio para las rutas que no
+    // coinciden con nada.
+    globalNotFound: true,
+  },
   ...(isPagesBuild
     ? {
         output: "export",

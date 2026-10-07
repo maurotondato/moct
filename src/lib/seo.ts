@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import { asset } from "@/lib/asset";
 import { site } from "@/config/site";
 import { defaultLocale, hreflang, locales, type Locale } from "@/i18n/config";
 
@@ -16,10 +17,25 @@ export function absoluteUrl(path = "/") {
 }
 
 /**
- * El despliegue de vista previa no debe competir en Google con el dominio
- * real: sería contenido duplicado de nuestra propia web.
+ * Bloqueo de indexación, explícito y por entorno.
+ *
+ * Antes se deducía del tipo de build —el export estático era siempre una vista
+ * previa—, pero ahora ese mismo export es el sitio de producción en el dominio
+ * propio. Así que el bloqueo se pide a mano, sólo en despliegues de prueba.
  */
-export const isPreviewDeploy = process.env.DEPLOY_TARGET === "github-pages";
+export const isSearchBlocked = process.env.NEXT_PUBLIC_NOINDEX === "true";
+
+/**
+ * El export estático sirve cada ruta como carpeta, así que la URL real termina
+ * en barra. Next ya lo aplica en los canonical y los hreflang; esto es para que
+ * lo que escribimos a mano —el sitemap— diga exactamente la misma dirección y
+ * no una que redirige.
+ */
+export function canonicalUrl(path = "/") {
+  const url = absoluteUrl(path);
+  if (process.env.DEPLOY_TARGET !== "github-pages") return url;
+  return url.endsWith("/") ? url : `${url}/`;
+}
 
 /**
  * Construye el bloque de alternates (canonical + hreflang + x-default)
@@ -32,9 +48,9 @@ export function buildAlternates(locale: Locale, pathWithoutLocale = "") {
 
   const languages: Record<string, string> = {};
   for (const l of locales) {
-    languages[hreflang[l]] = absoluteUrl(`/${l}${suffix}`);
+    languages[hreflang[l]] = canonicalUrl(`/${l}${suffix}`);
   }
-  languages["x-default"] = absoluteUrl(`/${defaultLocale}${suffix}`);
+  languages["x-default"] = canonicalUrl(`/${defaultLocale}${suffix}`);
 
   return {
     canonical: absoluteUrl(`/${locale}${suffix}`),
@@ -97,10 +113,18 @@ export function organizationJsonLd(locale: Locale) {
     "@id": `${site.url}/#organization`,
     name: site.name,
     legalName: site.legalName,
-    url: absoluteUrl(`/${locale}`),
-    logo: absoluteUrl("/logo.svg"),
+    url: canonicalUrl(`/${locale}`),
+    logo: absoluteUrl(asset("/brand/logo.svg")),
     foundingDate: String(site.foundingYear),
     ...(sameAs.length ? { sameAs } : {}),
+    // Dirección postal: es uno de los datos que usan los buscadores y los
+    // asistentes para verificar que detrás del sitio hay una empresa real.
+    address: {
+      "@type": "PostalAddress",
+      addressRegion: site.address.region,
+      addressCountry: site.address.country,
+    },
+    areaServed: site.address.country,
     ...(site.contact.email
       ? {
           contactPoint: [
@@ -108,8 +132,9 @@ export function organizationJsonLd(locale: Locale) {
               "@type": "ContactPoint",
               contactType: "sales",
               email: site.contact.email,
-              ...(site.contact.phone ? { telephone: site.contact.phone } : {}),
+              telephone: `+${site.contact.whatsapp}`,
               availableLanguage: ["es", "en"],
+              areaServed: site.address.country,
             },
           ],
         }
@@ -123,7 +148,7 @@ export function websiteJsonLd(locale: Locale) {
     "@type": "WebSite",
     "@id": `${site.url}/#website`,
     name: site.name,
-    url: absoluteUrl(`/${locale}`),
+    url: canonicalUrl(`/${locale}`),
     inLanguage: hreflang[locale],
     publisher: { "@id": `${site.url}/#organization` },
   };

@@ -1,10 +1,10 @@
 import type { MetadataRoute } from "next";
-import { absoluteUrl, isPreviewDeploy } from "@/lib/seo";
+import { absoluteUrl, isSearchBlocked } from "@/lib/seo";
 
 export default function robots(): MetadataRoute.Robots {
-  // La vista previa se cierra entera: no queremos que Google la indexe y
-  // después compita con el dominio real por las mismas palabras.
-  if (isPreviewDeploy) {
+  // Sólo los despliegues de prueba se cierran, para que no compitan con el
+  // dominio real por las mismas palabras.
+  if (isSearchBlocked) {
     return { rules: [{ userAgent: "*", disallow: "/" }] };
   }
 
