@@ -23,25 +23,63 @@ npm run lint        # eslint
 npx tsc --noEmit
 ```
 
-## Vista previa en GitHub Pages
+## Dominio y DNS (moctlab.com.ar)
+
+**NIC.ar no tiene editor de zona: sólo delega servidores de nombres.** No se
+pueden cargar registros A, AAAA ni CNAME ahí. Hace falta un proveedor de DNS
+—Cloudflare en plan gratuito alcanza— y en NIC.ar se delega hacia él.
+
+### 1. Cargar la zona en el proveedor de DNS
+
+Registros que apuntan a GitHub Pages, para el dominio sin `www`:
+
+| Tipo | Nombre | Valor |
+|---|---|---|
+| A | `@` | `185.199.108.153` |
+| A | `@` | `185.199.109.153` |
+| A | `@` | `185.199.110.153` |
+| A | `@` | `185.199.111.153` |
+| AAAA | `@` | `2606:50c0:8000::153` |
+| AAAA | `@` | `2606:50c0:8001::153` |
+| AAAA | `@` | `2606:50c0:8002::153` |
+| AAAA | `@` | `2606:50c0:8003::153` |
+| CNAME | `www` | `maurotondato.github.io` |
+
+En Cloudflare, estos registros van **sin proxy** (nube gris, "DNS only"). Con el
+proxy activado GitHub no puede validar el dominio para emitir el certificado y
+"Enforce HTTPS" queda deshabilitado. Una vez que el certificado está emitido, el
+proxy se puede encender si hace falta.
+
+### 2. Delegar en NIC.ar
+
+Trámites a Distancia → NICar → la lista de dominios → el dominio → **Delegar**.
+Se cargan los dos servidores de nombres que da el proveedor y se confirma con
+**Ejecutar cambios**. Ojo: *Delegar* no es lo mismo que *Autodelegar*; esa
+segunda opción es para servidores de nombres propios dentro del mismo dominio.
+
+### 3. Activar el dominio en GitHub
+
+Settings → Pages → Custom domain → `moctlab.com.ar` → Save. Cuando aparezca
+"DNS check successful", recién ahí marcar **Enforce HTTPS**: el certificado
+tarda unos minutos en emitirse.
+
+El archivo `public/CNAME` viaja dentro del artefacto y declara el dominio en
+cada despliegue, así que no hay que volver a tocarlo.
+
+## Despliegue
 
 El sitio se publica solo en cada push: lo hace `.github/workflows/pages.yml`.
 Para activarlo, una vez, en GitHub: **Settings → Pages → Source: GitHub Actions**.
-Queda en `https://<usuario>.github.io/<repo>/`.
 
 Dos cosas que hay que saber de este despliegue:
 
-- **Es una vista previa, no el sitio final.** Se publica con `noindex` y con el
-  `robots.txt` cerrado, para que no compita en Google con el dominio real
-  cuando exista.
 - **Pages no corre servidor.** El proxy que redirige `/` al idioma del
   visitante no existe ahí, así que `scripts/pages-postbuild.mjs` escribe un
   `index.html` de raíz que hace lo mismo desde el navegador. Ese script también
   crea el `.nojekyll` sin el cual Pages ignora la carpeta `_next/` y el sitio
-  carga sin estilos.
-
-Para el dominio real conviene un hosting con servidor (Vercel y similares):
-vuelve el proxy, la optimización de imágenes y las rutas dinámicas.
+  carga sin estilos, y los atajos de `/about`, `/contact` y `/privacy`.
+- **Para bloquear la indexación en un despliegue de prueba**, se define
+  `NEXT_PUBLIC_NOINDEX=true`. En producción no se define.
 
 ## Arquitectura
 
