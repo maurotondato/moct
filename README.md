@@ -80,17 +80,20 @@ src/
 
 ## Formulario de contacto
 
-El envío va a un servicio externo, porque un sitio estático no manda mails solo.
-Se activa con la variable `NEXT_PUBLIC_FORM_ENDPOINT` (Formspree, Web3Forms y
-similares aceptan el mismo POST con JSON). Sin esa variable el formulario no se
-rompe: arma un mailto con todo cargado y abre el cliente de correo.
+El formulario arma un mensaje de WhatsApp con los datos cargados y abre el chat
+con el número de `site.contact.whatsapp`. No hay servicio externo de por medio:
+un sitio estático no manda mails solo, y así la consulta llega al teléfono al
+instante sin una cuenta más que mantener.
+
+El enlace se abre dentro del gesto de envío, que es lo que permite abrir una
+pestaña sin que el navegador lo bloquee; igual queda a la vista por si el
+bloqueador se adelanta.
 
 ## Pendiente del brief
 
 - [ ] ⚠️ **Revisar los compromisos comerciales**: plazos, precio cerrado,
       propiedad del código y respuestas de FAQ son redacción propuesta, no
       confirmada. Están en `src/i18n/dictionaries/es.ts`.
-- [ ] Activar `NEXT_PUBLIC_FORM_ENDPOINT` para que el formulario envíe solo
 - [ ] Dominio final → `site.url`
 - [ ] Definir si Pliggo vive en este dominio o aparte
 - [ ] Datos de contacto, redes y razón social

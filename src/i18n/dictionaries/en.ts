@@ -226,14 +226,15 @@ export const en: Dictionary = {
       message: "What do you need",
       messagePlaceholder:
         "Tell us what problem you want to solve. You don't need to know the solution.",
-      submit: "Send enquiry",
-      sending: "Sending...",
-      success: "Done. We'll reply within 24 business hours.",
+      submit: "Send via WhatsApp",
+      success: "We opened WhatsApp with your message ready to send.",
+      openWhatsapp: "Didn't open? Open it here",
       error:
-        "Couldn't send. Write to us directly at moct.ventas@gmail.com and we'll sort it out.",
+        "We couldn't open WhatsApp. Write to us at moct.ventas@gmail.com and we'll sort it out.",
       required: "Please fill this in",
       invalidEmail: "Check the email",
       fallbackNote: "You can also write to us directly:",
+      whatsappIntro: "Hi moctLab, I'm writing about a project.",
     },
   },
 

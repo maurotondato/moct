@@ -234,14 +234,16 @@ export const es = {
       message: "Qué necesitás",
       messagePlaceholder:
         "Contanos qué problema querés resolver. No hace falta que sepas la solución.",
-      submit: "Enviar consulta",
-      sending: "Enviando...",
-      success: "Listo. Te respondemos dentro de las 24 horas hábiles.",
+      submit: "Enviar por WhatsApp",
+      success: "Te abrimos WhatsApp con el mensaje listo para enviar.",
+      openWhatsapp: "¿No se abrió? Abrilo acá",
       error:
-        "No se pudo enviar. Escribinos directamente a moct.ventas@gmail.com y lo resolvemos.",
+        "No pudimos abrir WhatsApp. Escribinos a moct.ventas@gmail.com y lo resolvemos.",
       required: "Completá este campo",
       invalidEmail: "Revisá el email",
       fallbackNote: "También podés escribirnos directo:",
+      /** Primera línea del mensaje que se arma para el chat. */
+      whatsappIntro: "Hola moctLab, les escribo por un proyecto.",
     },
   },
 

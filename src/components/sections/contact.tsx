@@ -8,17 +8,18 @@ import type { Dictionary } from "@/i18n/get-dictionary";
 import { cn } from "@/lib/utils";
 
 /**
- * Un sitio estático no puede mandar mails por sí solo, así que el envío va a un
- * servicio externo configurado por entorno (Formspree, Web3Forms y similares
- * aceptan este mismo POST con JSON).
+ * El formulario arma un mensaje de WhatsApp y abre el chat con todo escrito.
  *
- * Si no hay endpoint configurado, el formulario no se rompe: arma un mailto con
- * todo el contenido ya cargado y abre el cliente de correo. Así la web sirve
- * desde el primer día y activarlo después es pegar una variable.
+ * Un sitio estático no puede mandar mails por sí solo, y un servicio externo
+ * de formularios agrega una cuenta más que mantener y un correo que alguien
+ * tiene que mirar. Por WhatsApp la consulta llega al teléfono al instante y la
+ * conversación arranca en el canal donde se responde más rápido.
+ *
+ * El enlace se abre dentro del gesto de envío, que es lo que permite abrir una
+ * pestaña sin que el navegador lo bloquee. Igual queda a la vista por si el
+ * bloqueador se adelanta.
  */
-const FORM_ENDPOINT = process.env.NEXT_PUBLIC_FORM_ENDPOINT ?? "";
-
-type Status = "idle" | "sending" | "success" | "error";
+type Status = "idle" | "success" | "error";
 type Errors = Partial<Record<"name" | "email" | "message", string>>;
 
 export function Contact({ dict }: { dict: Dictionary }) {
@@ -26,8 +27,10 @@ export function Contact({ dict }: { dict: Dictionary }) {
   const whatsapp = whatsappLink(dict.contact.whatsappMessage);
   const [status, setStatus] = useState<Status>("idle");
   const [errors, setErrors] = useState<Errors>({});
+  // Se guarda para ofrecerlo como enlace si el navegador bloqueó la pestaña.
+  const [sentLink, setSentLink] = useState<string | null>(null);
 
-  async function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
+  function handleSubmit(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     const form = event.currentTarget;
     const data = new FormData(form);
@@ -53,41 +56,29 @@ export function Contact({ dict }: { dict: Dictionary }) {
     setErrors(nextErrors);
     if (Object.keys(nextErrors).length) return;
 
-    const subject = `Consulta desde la web — ${values.name}`;
     const body = [
-      `Nombre: ${values.name}`,
-      `Email: ${values.email}`,
-      values.company ? `Empresa: ${values.company}` : null,
+      t.whatsappIntro,
+      "",
+      `${t.name}: ${values.name}`,
+      `${t.email}: ${values.email}`,
+      values.company ? `${t.company}: ${values.company}` : null,
       "",
       values.message,
     ]
-      .filter(Boolean)
+      .filter((line) => line !== null)
       .join("\n");
 
-    if (!FORM_ENDPOINT) {
-      window.location.href = `mailto:${site.contact.email}?subject=${encodeURIComponent(
-        subject,
-      )}&body=${encodeURIComponent(body)}`;
+    const link = whatsappLink(body);
+    if (!link) {
+      setStatus("error");
       return;
     }
 
-    setStatus("sending");
-    try {
-      const response = await fetch(FORM_ENDPOINT, {
-        method: "POST",
-        headers: { "Content-Type": "application/json", Accept: "application/json" },
-        body: JSON.stringify({ ...values, subject }),
-      });
-      if (!response.ok) throw new Error(String(response.status));
-      form.reset();
-      setStatus("success");
-    } catch {
-      setStatus("error");
-    }
+    setSentLink(link);
+    setStatus("success");
+    window.open(link, "_blank", "noopener,noreferrer");
   }
 
-  // Panel oscuro propio: con el campo tecnológico detrás, un fondo casi
-  // transparente dejaba los textos de ayuda ilegibles.
   const fieldClass =
     "w-full rounded-xl border bg-ink-950/70 px-4 py-3.5 text-fluid-sm text-chalk outline-none transition-all duration-300 placeholder:text-chalk-muted focus:border-accent focus:bg-ink-950/85 focus:ring-4 focus:ring-accent/15";
 
@@ -227,10 +218,9 @@ export function Contact({ dict }: { dict: Dictionary }) {
 
               <button
                 type="submit"
-                disabled={status === "sending"}
-                className="group inline-flex w-full items-center justify-center gap-2 rounded-pill bg-accent px-8 py-4 text-fluid-sm font-medium text-white shadow-[0_0_0_1px_rgb(78_20_255/0.5),0_10px_40px_-12px_rgb(78_20_255/0.8)] transition-all duration-300 ease-out-expo hover:-translate-y-0.5 hover:bg-accent-bright disabled:cursor-not-allowed disabled:opacity-60 sm:w-auto"
+                className="group inline-flex w-full items-center justify-center gap-2 rounded-pill bg-accent px-8 py-4 text-fluid-sm font-medium text-white shadow-[0_0_0_1px_rgb(78_20_255/0.5),0_10px_40px_-12px_rgb(78_20_255/0.8)] transition-all duration-300 ease-out-expo hover:-translate-y-0.5 hover:bg-accent-bright sm:w-auto"
               >
-                {status === "sending" ? t.sending : t.submit}
+                {t.submit}
                 <span
                   aria-hidden
                   className="transition-transform duration-300 ease-out-expo group-hover:translate-x-1"
@@ -240,7 +230,7 @@ export function Contact({ dict }: { dict: Dictionary }) {
               </button>
 
               {/* aria-live: el lector de pantalla anuncia el resultado sin mover el foco. */}
-              <p
+              <div
                 aria-live="polite"
                 className={cn(
                   "text-fluid-sm",
@@ -248,9 +238,23 @@ export function Contact({ dict }: { dict: Dictionary }) {
                   status === "error" && "text-red-300",
                 )}
               >
-                {status === "success" ? t.success : null}
-                {status === "error" ? t.error : null}
-              </p>
+                {status === "success" ? (
+                  <p>
+                    {t.success}{" "}
+                    {sentLink ? (
+                      <a
+                        href={sentLink}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="underline underline-offset-4 transition-colors hover:text-accent"
+                      >
+                        {t.openWhatsapp}
+                      </a>
+                    ) : null}
+                  </p>
+                ) : null}
+                {status === "error" ? <p>{t.error}</p> : null}
+              </div>
             </form>
           </Reveal>
         </div>

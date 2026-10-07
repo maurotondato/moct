@@ -271,6 +271,9 @@ export function SectionsField({ heroId = "hero" }: { heroId?: string }) {
     const mouseTarget = { x: 0.5, y: 0.5 };
 
     let pulse = 0;
+    // El anillo se dispara una sola vez, en el primer cambio de sección.
+    // Repetirlo en cada cruce terminaba siendo un parpadeo constante.
+    let pulseSpent = false;
     let activeId = "";
 
     /**
@@ -301,7 +304,10 @@ export function SectionsField({ heroId = "hero" }: { heroId?: string }) {
           if (id === activeId) continue;
           activeId = id;
           applyLook(id);
-          if (!prefersReduced) pulse = 1;
+          if (!prefersReduced && !pulseSpent) {
+            pulse = 1;
+            pulseSpent = true;
+          }
         }
       },
       { rootMargin: "-45% 0px -45% 0px", threshold: 0 },
