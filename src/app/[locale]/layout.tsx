@@ -9,6 +9,7 @@ import { getDictionary } from "@/i18n/get-dictionary";
 import {
   buildAlternates,
   isSearchBlocked,
+  OG_IMAGE,
   organizationJsonLd,
   websiteJsonLd,
 } from "@/lib/seo";
@@ -62,11 +63,20 @@ export async function generateMetadata({
       title: dict.meta.title,
       description: dict.meta.description,
       url: buildAlternates(locale).canonical,
+      images: [
+        {
+          url: OG_IMAGE.url(),
+          width: OG_IMAGE.width,
+          height: OG_IMAGE.height,
+          alt: OG_IMAGE.alt,
+        },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title: dict.meta.title,
       description: dict.meta.description,
+      images: [OG_IMAGE.url()],
     },
     robots: isSearchBlocked
       ? { index: false, follow: false }

@@ -58,6 +58,18 @@ export function buildAlternates(locale: Locale, pathWithoutLocale = "") {
   };
 }
 
+/**
+ * Imagen que se muestra al compartir el enlace. Es un PNG fijo generado desde
+ * el logo: con export estático no hay servidor que las dibuje al vuelo, y una
+ * imagen determinista no se rompe nunca.
+ */
+export const OG_IMAGE = {
+  url: () => absoluteUrl(asset("/og.png")),
+  width: 1200,
+  height: 630,
+  alt: `${site.name} — ${site.tagline}`,
+};
+
 type PageMetaInput = {
   locale: Locale;
   title: string;
@@ -88,13 +100,22 @@ export function buildMetadata({
       title,
       description,
       url: alternates.canonical,
-      ...(image ? { images: [{ url: image }] } : {}),
+      images: [
+        image
+          ? { url: image }
+          : {
+              url: OG_IMAGE.url(),
+              width: OG_IMAGE.width,
+              height: OG_IMAGE.height,
+              alt: OG_IMAGE.alt,
+            },
+      ],
     },
     twitter: {
       card: "summary_large_image",
       title,
       description,
-      ...(image ? { images: [image] } : {}),
+      images: [image ?? OG_IMAGE.url()],
     },
   };
 }
