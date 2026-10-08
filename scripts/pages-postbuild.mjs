@@ -18,6 +18,11 @@ import { join } from "node:path";
 
 const outDir = process.argv[2] ?? "out";
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH ?? "";
+// Los canonical tienen que ser absolutos: uno relativo es válido pero más
+// frágil, y acá no cuesta nada escribirlo completo.
+const siteUrl = (
+  process.env.NEXT_PUBLIC_SITE_URL ?? "https://moctlab.com.ar"
+).replace(/\/+$/, "");
 
 if (!existsSync(outDir)) {
   console.error(`No existe "${outDir}". ¿Corriste el export antes?`);
@@ -29,13 +34,19 @@ writeFileSync(join(outDir, ".nojekyll"), "");
 const defaultLocale = "es";
 const locales = ["es", "en"];
 
+/**
+ * Ojo con el `noindex` acá: la raíz del dominio es la URL que más enlaces
+ * recibe, y marcarla hacía que Google rechazara indexarla —y de paso que no
+ * fluyera nada hacia la página real—. Lo correcto es dejarla indexable con un
+ * canonical absoluto a la versión con idioma: así Google consolida las dos en
+ * una sola, en vez de descartarla.
+ */
 const redirect = `<!doctype html>
 <html lang="${defaultLocale}">
   <head>
     <meta charset="utf-8" />
-    <title>moctLab.</title>
-    <meta name="robots" content="noindex" />
-    <link rel="canonical" href="${basePath}/${defaultLocale}/" />
+    <title>moctLab. — Soluciones que impulsan</title>
+    <link rel="canonical" href="${siteUrl}/${defaultLocale}/" />
     <!-- El meta va dentro de noscript: si no, compite con el redirect de
          abajo y el navegador aborta una de las dos navegaciones. -->
     <noscript>
@@ -62,8 +73,8 @@ writeFileSync(join(outDir, "index.html"), redirect);
 /**
  * Atajos en la raíz para las rutas que los agentes prueban de memoria:
  * /about, /contact y /privacy. Las páginas reales viven bajo el idioma, así
- * que acá sólo va un reenvío, marcado noindex y con el canonical apuntando a
- * la versión buena para que no compita con ella.
+ * que acá va un reenvío con el canonical apuntando a la versión buena: Google
+ * consolida el atajo en ella en vez de tratarlo como contenido aparte.
  */
 const shortcuts = ["about", "contact", "privacy"];
 
@@ -74,8 +85,7 @@ for (const slug of shortcuts) {
   <head>
     <meta charset="utf-8" />
     <title>moctLab.</title>
-    <meta name="robots" content="noindex, follow" />
-    <link rel="canonical" href="${target}" />
+    <link rel="canonical" href="${siteUrl}${target}" />
     <noscript>
       <meta http-equiv="refresh" content="0; url=${target}" />
     </noscript>
