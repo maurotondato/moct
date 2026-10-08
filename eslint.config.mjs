@@ -12,6 +12,8 @@ const eslintConfig = defineConfig([
     "out/**",
     "build/**",
     "next-env.d.ts",
+    // Fuente del reel de video: no es parte del sitio.
+    "marketing/**",
   ]),
 ]);
 
