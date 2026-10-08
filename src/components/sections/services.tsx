@@ -66,9 +66,11 @@ export function Services({
         <div className="mt-20 grid gap-16 lg:mt-28 lg:grid-cols-[0.85fr_1fr] lg:gap-24">
           {/* Columna fija: índice, riel de progreso y motivo del servicio activo. */}
           <div className="hidden lg:block">
-            {/* Centrado vertical en pantalla: la columna fija queda a la misma
-                altura que el texto del servicio, que también va centrado. */}
-            <div className="sticky top-0 flex h-screen flex-col justify-center">
+            {/* La caja fija mide lo mismo que cada servicio (70vh) y se pega a
+                15vh: así su centro cae en el centro de la pantalla, el mismo
+                lugar donde queda centrado el texto del servicio activo. Con
+                h-screen el primero y el último quedaban 135px desfasados. */}
+            <div className="sticky top-[15vh] flex h-[70vh] flex-col justify-center">
               <div className="flex items-start gap-8">
                 <ol
                   aria-hidden
@@ -141,7 +143,7 @@ export function Services({
                 ref={(node) => {
                   itemsRef.current[index] = node;
                 }}
-                className="lg:flex lg:min-h-screen lg:flex-col lg:justify-center"
+                className="lg:flex lg:min-h-[70vh] lg:flex-col lg:justify-center"
               >
                 <Reveal>
                   <div

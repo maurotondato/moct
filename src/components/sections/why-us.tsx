@@ -20,9 +20,9 @@ export function WhyUs({ dict }: { dict: Dictionary }) {
           subtitle={dict.whyUs.subtitle}
         />
 
-        <ul className="mt-16 grid gap-8 md:grid-cols-2 lg:grid-cols-3 lg:gap-10">
+        <ul className="mt-16 grid gap-8 md:grid-cols-2 lg:gap-10">
           {dict.whyUs.items.map((item, index) => (
-            <Reveal as="li" key={item.title} delay={(index % 3) * 90}>
+            <Reveal as="li" key={item.title} delay={(index % 2) * 90}>
               <div className="group relative h-full rounded-card border border-white/10 bg-ink-950/62 p-8 transition-all duration-500 ease-out-expo hover:-translate-y-1 hover:border-accent/40 hover:bg-ink-900/75">
                 {/* Resplandor que aparece al pasar el mouse. */}
                 <span
@@ -33,7 +33,7 @@ export function WhyUs({ dict }: { dict: Dictionary }) {
                   }}
                 />
                 {/* Se marca sola al pasar por la tarjeta, escalonada por columna. */}
-                <CheckMark delay={(index % 3) * 130} />
+                <CheckMark delay={(index % 2) * 130} />
                 <h3 className="mt-6 text-fluid-lg leading-snug font-semibold text-balance">
                   {item.title}
                 </h3>

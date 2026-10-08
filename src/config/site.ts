@@ -11,8 +11,7 @@ export const site = {
   legalName: "moctLab.", // TODO: razón social para el footer y el JSON-LD
   /**
    * Dirección a nivel provincia: es lo que las IA usan para verificar que la
-   * empresa existe. La provincia está deducida del código de área del WhatsApp
-   * (2223, Buenos Aires) — confirmar antes de publicar.
+   * empresa existe. Provincia confirmada por el titular.
    */
   address: {
     region: "Buenos Aires",

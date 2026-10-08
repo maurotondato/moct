@@ -153,20 +153,12 @@ export const es = {
       "Somos un equipo chico y nuevo. Eso tiene desventajas, y también estas ventajas.",
     items: [
       {
-        title: "Precio y plazo cerrados",
-        body: "Antes de empezar sabés cuánto sale y cuándo lo tenés. Nada de facturar por hora y que el proyecto no termine nunca.",
-      },
-      {
         title: "El código es tuyo",
         body: "Te entregamos todo: el código, los accesos, la documentación. Si algún día querés seguir con otro, podés. No te secuestramos el proyecto.",
       },
       {
         title: "Hablás con quien programa",
         body: "Sin capas de intermediarios ni ejecutivos de cuenta. La persona que entiende tu problema es la que escribe la solución.",
-      },
-      {
-        title: "Ves avances cada dos semanas",
-        body: "No hay meses de silencio. Cada quince días hay algo funcionando que podés probar con tus propias manos.",
       },
       {
         title: "Construimos productos propios",

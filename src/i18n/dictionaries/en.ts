@@ -146,20 +146,12 @@ export const en: Dictionary = {
       "We're a small, new team. That has downsides — and it also has these upsides.",
     items: [
       {
-        title: "Fixed price and timeline",
-        body: "Before we start you know what it costs and when you get it. No billing by the hour on a project that never ends.",
-      },
-      {
         title: "The code is yours",
         body: "We hand over everything: source code, access, documentation. If you ever want to continue with someone else, you can. We don't hold your project hostage.",
       },
       {
         title: "You talk to the people who build it",
         body: "No layers of account managers. The person who understands your problem is the one writing the solution.",
-      },
-      {
-        title: "You see progress every two weeks",
-        body: "No months of silence. Every fortnight there's something working that you can try with your own hands.",
       },
       {
         title: "We build our own products",
